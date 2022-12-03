@@ -28,6 +28,8 @@ function App() {
             <InputField
               sequence={sequence}
               setSequence={setSequence}
+              type={type}
+              setType={setType}
             />
           </div>
         </div>
