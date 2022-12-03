@@ -17,7 +17,7 @@ function App() {
             <h1 className='text-5xl font-bold text-right'>
               Wprowadz sekwencje bialek{''}
               <span className='leading-tight font-mono block text-right font-extrabold text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-800 to-purple-400'>
-                RNA
+                {type || 'RNA'}
               </span>
             </h1>
             <AcidType
@@ -29,7 +29,6 @@ function App() {
               sequence={sequence}
               setSequence={setSequence}
               type={type}
-              setType={setType}
             />
           </div>
         </div>
