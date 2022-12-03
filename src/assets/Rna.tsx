@@ -22,7 +22,7 @@ const Rna = (props: any) => {
     });
     return (
         <group ref={mesh}>
-            { [...Array(40)].map((_, i) => (
+            { [...Array(30)].map((_, i) => (
                 <>
                 <RnaBranch i={i} />
                 </>
