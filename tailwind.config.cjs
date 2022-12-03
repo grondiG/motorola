@@ -7,6 +7,14 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
+        fade_in_keyframes: {
+          from: {
+            opacity: 0
+          },
+          to: {
+            opacity: 1
+          },
+        },
         fade_from_bottom_keyframes: {
           from: {
             opacity: 0,
@@ -20,6 +28,7 @@ module.exports = {
       },
       animation: {
         'fade-from-bottom': "fade_from_bottom_keyframes 0.3s ease-in-out",
+        'fade-in': "fade_in_keyframes 0.3s ease-in-out",
       }
     },
   },

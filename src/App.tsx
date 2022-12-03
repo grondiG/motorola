@@ -33,7 +33,10 @@ function App() {
           </div>
         </div>
         <Canvas className='h-full w-full'>
-          <pointLight position={[0,20,10]} intensity={1.5} />
+          <pointLight
+            position={[0, -10, 10]}
+            intensity={1.5}
+          />
           <Rna />
         </Canvas>
       </div>
