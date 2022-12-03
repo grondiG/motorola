@@ -5,21 +5,21 @@ const AcidType = (props: {
   type: string;
   setType: Function;
 }) => {
-  const styleDNA = {
+  const styleRNA = {
     width: '50%',
     left: 0,
   };
 
-  const styleRNA = {
+  const styleDNA = {
     width: '50%',
     left: '50%',
   };
 
   useEffect(() => {
     if (props.sequence.includes('T')) {
-      props.setType('RNA');
-    } else if (props.sequence.includes('U')) {
       props.setType('DNA');
+    } else if (props.sequence.includes('U')) {
+      props.setType('RNA');
     } else {
       props.setType('');
     }
