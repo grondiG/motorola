@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import InputField from './components/InputField/InputField';
 
 import { Canvas } from '@react-three/fiber';
-import Box from './assets/Box';
+import Rna from './assets/Rna';
 import AcidType from './components/AcidType/AcidType';
 
 function App() {
@@ -34,8 +34,8 @@ function App() {
           </div>
         </div>
         <Canvas className='h-full w-full'>
-          <ambientLight />
-          <Box />
+          <pointLight position={[0,20,10]} intensity={1.5} />
+          <Rna />
         </Canvas>
       </div>
     </>
