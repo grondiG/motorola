@@ -28,3 +28,9 @@
 body {
   overflow: hidden;
 }
+
+  ::selection {
+    background-color: rgb(126 34 206);
+    color: #fff;
+  }
+  

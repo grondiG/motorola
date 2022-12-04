@@ -3,14 +3,13 @@ import { useState } from 'react';
 const InputCaption = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   return (
-    <div className='absolute right-0 -bottom-24 cursor-help'>
-      <p
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}>
-        Jak mam to zrobic?
-      </p>
+    <div
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+      className='absolute left-8 bg-purple-700 bottom-8 w-16 h-16 rounded-full'>
+      <p className='text-center  leading-[64px] text-xl text-extrabold'>?</p>
       {showTooltip && (
-        <div className='w-52 absolute right-0 top-6 bg-gray-800 p-5 rounded-lg transition-all animate-fade-in'>
+        <div className='w-52 absolute left-6 bottom-16 bg-gray-800 p-5 rounded-lg transition-all animate-fade-in'>
           <p>Wejscie przyjmuje nastepujace wartosci</p>
           <ul>
             <li>A - Adenina</li>
