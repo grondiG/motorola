@@ -15,10 +15,10 @@ const Rna = (props: any) => {
         useFrame(()=>{
             ref.current.minPolarAngle = Math.PI/2;
             ref.current.maxPolarAngle = Math.PI/2;
-            ref.current.target.set(0,-40,0);
+            ref.current.target.set(0,-30,0);
             ref.current.update()
         });
-        return <OrbitControls ref={ref} args={[camera]} {...props} />
+        return <OrbitControls ref={ref} args={[camera]} {...props} enableZoom={false} />
     }
     useFrame(() => {
         if(!mesh.current){
@@ -28,15 +28,14 @@ const Rna = (props: any) => {
     });
     return (
         <group ref={mesh}>
-            { [...Array(props.seq.length*3)].map((_, i) => {
-                console.log(i);
+            { props.seq.split('').map((text:string, i:number) => {
+                console.log(text.length)
                 return (
                 <>
-                <RnaBranch i={i} />
+                <RnaBranch i={i} last={text.slice(-1)} />
                 </>
                 )})
             }
-            <axesHelper/>
         <Controls/>
 
         </group>
