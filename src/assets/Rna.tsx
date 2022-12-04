@@ -5,15 +5,21 @@ import BallRight from "./geometry/BallRight";
 import BallLeft from "./geometry/BallLeft";
 import {useThree} from "@react-three/fiber";
 import RnaBranch from "./geometry/RnaBranch";
+import { OrbitControls } from "@react-three/drei";
 
 const Rna = (props: any) => {
     const mesh = useRef<any>(null);
-    const {camera} = useThree();
-    // const tubeGeometry = new THREE.TubeGeometry(
-    useEffect(()=>{
-        camera.position.z = 25;
-        camera.position.y=-20;
-    })
+    const Controls=(props:any)=>{
+        const ref:any = useRef();
+        const {camera} = useThree();
+        useFrame(()=>{
+            ref.current.minPolarAngle = Math.PI/2;
+            ref.current.maxPolarAngle = Math.PI/2;
+            ref.current.target.set(0,-30,0);
+            ref.current.update()
+        });
+        return <OrbitControls ref={ref} args={[camera]} {...props} enableZoom={false} />
+    }
     useFrame(() => {
         if(!mesh.current){
             return;
@@ -22,12 +28,16 @@ const Rna = (props: any) => {
     });
     return (
         <group ref={mesh}>
-            { [...Array(30)].map((_, i) => (
+            { props.seq.split('').map((text:string, i:number) => {
+                console.log(text.length)
+                return (
                 <>
-                <RnaBranch i={i} />
+                <RnaBranch i={i} last={text.slice(-1)} />
                 </>
-                ))
+                )})
             }
+        <Controls/>
+
         </group>
     )
 }

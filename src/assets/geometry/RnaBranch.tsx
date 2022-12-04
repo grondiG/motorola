@@ -12,7 +12,7 @@ const RnaBranch = (props: any) => {
     });
     return (
         <group ref={mesh}>
-            <Cylinder />
+            <Cylinder last={props.last}/>
             <BallRight />
             <BallLeft />
         </group>

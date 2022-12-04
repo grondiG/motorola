@@ -8,7 +8,7 @@ const BallLeft = (props: any) => {
     return (
         <mesh ref={mesh}>
             <sphereGeometry />
-            <meshLambertMaterial color="#9E68A7" />
+            <meshLambertMaterial color="#ffffff" />
         </mesh>
     )
 }
