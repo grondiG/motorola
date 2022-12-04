@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef, useCallback, useMemo } from 'react';
 import InputField from './components/InputField/InputField';
-
-import { Canvas } from '@react-three/fiber';
+import React from 'react';
+import { Canvas, extend } from '@react-three/fiber';
 import Rna from './assets/Rna';
 import AcidType from './components/AcidType/AcidType';
+import {OrbitControls} from '@react-three/drei'
+
 
 function App() {
   const [sequence, setSequence] = useState('');
   const [type, setType] = useState('');
 
+  
+  
   return (
     <>
       <div className='w-screen h-screen grid grid-cols-2 grid-rows-1'>
@@ -38,6 +42,7 @@ function App() {
             intensity={1.5}
           />
           <Rna />
+          
         </Canvas>
       </div>
     </>
