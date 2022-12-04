@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import AnimatedLetter from './AnimatedLetter';
-import InputCaption from './InputCaption';
 
 const InputField = (props: {
   sequence: string;
@@ -50,7 +49,6 @@ const InputField = (props: {
             })
           : '\u00A0'}
       </div>
-      <InputCaption />
     </>
   );
 };

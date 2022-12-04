@@ -4,6 +4,8 @@ import InputField from './components/InputField/InputField';
 import { Canvas } from '@react-three/fiber';
 import Rna from './assets/Rna';
 import AcidType from './components/AcidType/AcidType';
+import InputCaption from './components/InputCaption/InputCaption';
+import ButtonContainer from './components/InputButtons/ButtonContainer';
 
 function App() {
   const [sequence, setSequence] = useState('');
@@ -30,8 +32,14 @@ function App() {
               setSequence={setSequence}
               type={type}
             />
+            <ButtonContainer
+              sequence={sequence}
+              setSequence={setSequence}
+            />
           </div>
         </div>
+
+        <InputCaption />
         <Canvas className='h-full w-full'>
           <pointLight
             position={[0, -10, 10]}

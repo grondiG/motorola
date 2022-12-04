@@ -26,7 +26,7 @@ const AcidType = (props: {
   }, [props.sequence]);
 
   return (
-    <div className='flex border p-5 rounded-xl border-purple-700 absolute right-[400px]'>
+    <div className='flex border p-5 rounded-xl border-purple-500 absolute right-[400px]'>
       <div className='pr-2'>RNA</div>
       <div className='pl-2'>DNA</div>
       <div
@@ -37,8 +37,8 @@ const AcidType = (props: {
             ? styleDNA
             : undefined
         }
-        className='w-full h-full absolute bg-purple-700 rounded-xl top-0 left-0 flex items-center text-2  xl text-extrabold justify-center transition-all duration-500'>
-        {props.type == '' && <span>?</span>}
+        className='w-full h-full absolute bg-purple-500 rounded-xl top-0 left-0 flex items-center text-extrabold justify-center transition-all duration-500'>
+        {props.type == '' && <span>Nieznany</span>}
       </div>
     </div>
   );
