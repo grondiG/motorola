@@ -24,12 +24,16 @@ const Cylinder = (props: any) => {
             color = "#7ADD7D";
             color2 = "#DD7AD4";
             break;
+        case 'T':
+            color = "#7ADD7D";
+            color2 = "#DD7AD4";
+            break;
     }
 
     useEffect(() => {
         mesh.current.rotation.z = 90 * Math.PI/180;
         mesh.current.position.x = -2.5;
-
+        console.log(props.last)
         mesh2.current.rotation.z = 90 * Math.PI/180;
         mesh2.current.position.x = 2.5;
         
