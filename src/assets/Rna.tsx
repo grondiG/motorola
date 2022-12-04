@@ -9,12 +9,9 @@ import { OrbitControls } from "@react-three/drei";
 
 const Rna = (props: any) => {
     const mesh = useRef<any>(null);
-    // const tubeGeometry = new THREE.TubeGeometry(
     const Controls=(props:any)=>{
         const ref:any = useRef();
         const {camera} = useThree();
-        // camera.position.y = -30;
-        // camera.position.x = -20;
         useFrame(()=>{
             ref.current.minPolarAngle = Math.PI/2;
             ref.current.maxPolarAngle = Math.PI/2;
@@ -31,11 +28,13 @@ const Rna = (props: any) => {
     });
     return (
         <group ref={mesh}>
-            { [...Array(100)].map((_, i) => (
+            { [...Array(props.seq.length*3)].map((_, i) => {
+                console.log(i);
+                return (
                 <>
                 <RnaBranch i={i} />
                 </>
-                ))
+                )})
             }
             <axesHelper/>
         <Controls/>

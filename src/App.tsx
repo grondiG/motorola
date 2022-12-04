@@ -41,7 +41,7 @@ function App() {
             position={[0, -10, 10]}
             intensity={1.5}
           />
-          <Rna />
+          <Rna seq={sequence}/>
           
         </Canvas>
       </div>
