@@ -13,12 +13,14 @@ const Rna = (props: any) => {
     const Controls=(props:any)=>{
         const ref:any = useRef();
         const {camera} = useThree();
+        
         useFrame(()=>{
             if(ref.current) {
                 ref.current.minPolarAngle = Math.PI / 2;
                 ref.current.maxPolarAngle = Math.PI / 2;
                 ref.current.target.set(0, -30, 0);
                 ref.current.update();
+                light.current.position.copy(camera.position);
             }
         });
         return <OrbitControls ref={ref} args={[camera]} {...props} enableZoom={false} />
@@ -45,7 +47,6 @@ const Rna = (props: any) => {
         <Controls/>
 
         </group>
-            <axesHelper args={[20]} attach={light.current}   />
             <pointLight
         position={[20, -30, 0]}
         intensity={1.5}
