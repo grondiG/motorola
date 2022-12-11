@@ -1,5 +1,6 @@
 import {useEffect, useRef} from "react";
 import Tube from "./Tube";
+import {useFrame} from "@react-three/fiber";
 
 const Cylinder = (props: any) => {
     const mesh = useRef<any>(null);
@@ -33,12 +34,11 @@ const Cylinder = (props: any) => {
     useEffect(() => {
         mesh.current.rotation.z = 90 * Math.PI/180;
         mesh.current.position.x = -2.5;
-        console.log(props.last)
         mesh2.current.rotation.z = 90 * Math.PI/180;
         mesh2.current.position.x = 2.5;
-        
-    console.log(color);
     });
+
+
     return (
         <>
         <mesh ref={mesh}>

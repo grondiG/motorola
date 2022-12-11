@@ -11,8 +11,6 @@ import {OrbitControls} from '@react-three/drei'
 function App() {
   const [sequence, setSequence] = useState('');
   const [type, setType] = useState('');
-
-  
   
   return (
     <>
@@ -44,10 +42,7 @@ function App() {
 
         <InputCaption />
         <Canvas className='h-full w-full'>
-          <pointLight
-            position={[0, -10, 10]}
-            intensity={1.5}
-          />
+
           <Rna seq={sequence}/>
           
         </Canvas>
