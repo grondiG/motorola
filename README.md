@@ -1,0 +1,2 @@
+# motorola
+jeeeebaaaax kurwyyyyy 
