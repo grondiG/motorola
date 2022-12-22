@@ -28,7 +28,10 @@ const ResultProteinChain = (props: {
     'getSequenceImg',
     async () =>
       await axios
-        .get(`https://motorola-service.onrender.com/api/sequenceimg/${props.seq}`, { responseType: 'blob' })
+        .get(
+          `https://motorola-service.onrender.com/api/sequenceimg/${props.seq}`,
+          { responseType: 'blob' }
+        )
         .then((response) => {
           blobToDataURL(response.data, (dataUrl: any) => {
             setImg(dataUrl);
@@ -52,21 +55,27 @@ const ResultProteinChain = (props: {
           </div>
         ) : (
           <div className='w-full h-full'>
-            <h1 className='text-5xl font-bold text-center'>Sekwencja:</h1>
-            <img src={img} />
-            {/* TODO: Totalnie rozjebane okok */}
-            <button
-              onClick={() => {
-                const image = new Image();
-                image.src = img;
+            <h1 className='text-5xl font-bold text-center mb-8'>Sekwencja:</h1>
+            <div className='w-screen h-96 overflow-x-auto'>
+              <img src={img} className='h-full' />
+            </div>
+            <div className='flex w-screen justify-center mt-5'>
+              <button
+                className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl'
+                onClick={() => {
+                  const image = new Image();
+                  image.src = img;
 
-                const w = window.open('');
-                w?.document.write(image.outerHTML);
-              }}
-            >
-              Otwórz w nowej karcie
-            </button>
-            <button>Pobierz</button>
+                  const w = window.open('');
+                  w?.document.write(image.outerHTML);
+                }}
+              >
+                Otwórz w nowej karcie
+              </button>
+              <button className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl'>
+                Pobierz
+              </button>
+            </div>
           </div>
         )}
       </div>
