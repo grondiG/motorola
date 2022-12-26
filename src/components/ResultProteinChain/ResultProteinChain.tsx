@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { resolve } from 'node:path/win32';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useQuery } from 'react-query';
 import { MoonLoader } from 'react-spinners';
 import NavigationArrowDown from '../NavigationArrows/NavigationArrowDown';
@@ -11,6 +11,8 @@ const ResultProteinChain = (props: {
   setIsSubmited: Function;
 }) => {
   const [img, setImg] = useState('');
+  const [width, setWidth] = useState(0);
+  const imgRef:any = useRef();
 
   function handleReset() {
     props.setIsSubmited(false);
@@ -24,20 +26,37 @@ const ResultProteinChain = (props: {
     a.readAsDataURL(blob);
   }
 
+  const getImg = (img:any, callback:any) =>{
+      const blob = URL.createObjectURL(img);
+      const image = new Image();
+      image.src = blob;
+        image.onload = () => {
+            callback(image);
+            console.log(image);
+        }
+  }
+
   const { isLoading, error, data } = useQuery(
     'getSequenceImg',
     async () =>
       await axios
         .get(
-          `https://motorola-service.onrender.com/api/sequenceimg/${props.seq}`,
+          `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
+          // `https://www.grondihub.live/api/sequenceImg/AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCC`,
           { responseType: 'blob' }
         )
         .then((response) => {
+
           blobToDataURL(response.data, (dataUrl: any) => {
-            setImg(dataUrl);
+              setImg(dataUrl);
+
+              getImg(response.data, (image:any) => {
+                  setWidth(image.width);
+              });
           });
         })
   );
+
 
   return (
     <div className='w-screen h-screen bg-purple-900'>
@@ -56,8 +75,10 @@ const ResultProteinChain = (props: {
         ) : (
           <div className='w-full h-full'>
             <h1 className='text-5xl font-bold text-center mb-8'>Sekwencja:</h1>
-            <div className='w-screen h-96 overflow-x-auto'>
-              <img src={img} className='h-full' />
+            <div style={{height:"40vh",width:"100%",overflowX:"auto"}}>
+                <div style={{height:"100%", width:width,marginLeft:"1rem"}}>
+                    <img ref={imgRef} src={img} style={{height:"100%"}} />
+                </div>
             </div>
             <div className='flex w-screen justify-center mt-5'>
               <button
@@ -65,8 +86,7 @@ const ResultProteinChain = (props: {
                 onClick={() => {
                   const image = new Image();
                   image.src = img;
-
-                  const w = window.open('');
+                  const w = window.open('/'+image.src);
                   w?.document.write(image.outerHTML);
                 }}
               >
