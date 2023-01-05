@@ -1,0 +1,8 @@
+[submodule "backend"]
+	path = motorola
+	url = https://github.com/grondiG/motorola
+	branch = server
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/grondiG/motorola
+	branch = frontend

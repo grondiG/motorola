@@ -1,0 +1,21 @@
+{
+  "name": "motorola",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grondiG/motorola.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grondiG/motorola/issues"
+  },
+  "homepage": "https://github.com/grondiG/motorola#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
