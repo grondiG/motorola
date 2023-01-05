@@ -9,9 +9,13 @@ import NavigationArrowUp from '../NavigationArrows/NavigationArrowUp';
 const ResultProteinChain = (props: {
   seq: string;
   setIsSubmited: Function;
+  isSubmited: boolean;
 }) => {
   const [img, setImg] = useState('');
   const [width, setWidth] = useState(0);
+  const [isLoading,setIsLoading] = useState(true);
+  const [isError,setIsError] = useState(false);
+
   const imgRef:any = useRef();
 
   function handleReset() {
@@ -35,27 +39,33 @@ const ResultProteinChain = (props: {
             console.log(image);
         }
   }
-
-  const { isLoading, error, data } = useQuery(
-    'getSequenceImg',
-    async () =>
+  const query = async()=>{
       await axios
-        .get(
-          `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
-          // `https://www.grondihub.live/api/sequenceImg/AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCC`,
-          { responseType: 'blob' }
-        )
-        .then((response) => {
+          .get(
+              `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
+              { responseType: 'blob' }
+          )
+          .then((response) => {
 
-          blobToDataURL(response.data, (dataUrl: any) => {
-              setImg(dataUrl);
+              blobToDataURL(response.data, (dataUrl: any) => {
+                  setImg(dataUrl);
 
-              getImg(response.data, (image:any) => {
-                  setWidth(image.width);
+                  getImg(response.data, (image:any) => {
+                      setWidth(image.width);
+                  });
               });
-          });
-        })
-  );
+          })
+  }
+
+  useEffect(() => {
+      query().then(r => setIsLoading(false)).catch(e => setIsError(true));
+  }, []);
+
+  // const { isLoading, error, data } = useQuery(
+  //   'getSequenceImg',
+  //   async () =>
+  //
+  // );
 
 
   return (
@@ -66,7 +76,7 @@ const ResultProteinChain = (props: {
           <div className='w-full h-full flex justify-center items-center'>
             <MoonLoader />
           </div>
-        ) : error ? (
+        ) : isError ? (
           <div className='w-full h-full flex justify-center items-center'>
             <h1 className='text-5xl font-bold text-center'>
               Nie można przetworzyć wpisanej sekwencji

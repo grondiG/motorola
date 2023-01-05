@@ -56,7 +56,7 @@ function App() {
       </div>
       {isSubmited && (
         <>
-          <ResultProteinChain seq={sequence} setIsSubmited={setIsSubmited} />
+          <ResultProteinChain seq={sequence} setIsSubmited={setIsSubmited} isSubmited={isSubmited} />
           <ResultChart />
         </>
       )}
