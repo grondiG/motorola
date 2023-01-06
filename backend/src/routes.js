@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const image_size_1 = __importDefault(require("image-size"));
 const canvas_1 = require("canvas");
+const protein_1 = require("./protein");
 const fs_1 = __importDefault(require("fs"));
 const router = express_1.default.Router();
 const countAminoAcidsWeight = (sequence) => {
@@ -85,12 +86,86 @@ const countAminoAcidsWeight = (sequence) => {
     }
     return weight - (18.01528 * sequence.length);
 };
+const countHydropathyIndex = (sequence) => {
+    let index = 0;
+    sequence.split("").forEach((letter) => {
+        switch (letter) {
+            case 'A':
+                index += 1.8;
+                break;
+            case 'C':
+                index += 2.5;
+                break;
+            case 'D':
+                index += -3.5;
+                break;
+            case 'E':
+                index += -3.5;
+                break;
+            case 'F':
+                index += 2.8;
+                break;
+            case 'G':
+                index += -0.4;
+                break;
+            case 'H':
+                index += -3.2;
+                break;
+            case 'I':
+                index += 4.5;
+                break;
+            case 'K':
+                index += -3.9;
+                break;
+            case 'L':
+                index += 3.8;
+                break;
+            case 'M':
+                index += 1.9;
+                break;
+            case 'N':
+                index += -3.5;
+                break;
+            case 'P':
+                index += -1.6;
+                break;
+            case 'Q':
+                index += -3.5;
+                break;
+            case 'R':
+                index += -4.5;
+                break;
+            case 'S':
+                index += -0.8;
+                break;
+            case 'T':
+                index += -0.7;
+                break;
+            case 'V':
+                index += 4.2;
+                break;
+            case 'W':
+                index += -0.9;
+                break;
+            case 'Y':
+                index += -1.3;
+                break;
+        }
+    });
+    return index;
+};
 const getProteinInfo = (sequence) => {
     const info = [];
     sequence.split("").forEach((letter) => {
         info.push({
             letter: letter,
-            weight: countAminoAcidsWeight(letter)
+            weight: countAminoAcidsWeight(letter),
+            hydropathyIndex: countHydropathyIndex(letter),
+            pka: {
+                pka1: (0, protein_1.getAminoAcidspKa1)(letter),
+                pka2: (0, protein_1.getAminoAcidspKa2)(letter),
+                pka3: (0, protein_1.getAminoAcidspKa3)(letter)
+            }
         });
     });
     return info;

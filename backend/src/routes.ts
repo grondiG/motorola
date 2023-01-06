@@ -2,6 +2,7 @@ import express from 'express';
 import sizeOf from 'image-size';
 import {createCanvas, loadImage} from 'canvas';
 import images from 'images';
+import {getAminoAcidspKa1,getAminoAcidspKa3,getAminoAcidspKa2} from "./protein";
 import fs from 'fs';
 
 const router = express.Router();
@@ -74,13 +75,87 @@ const countAminoAcidsWeight = (sequence:string) => {
     }
     return weight - (18.01528*sequence.length);
 }
+const countHydropathyIndex = (sequence:string) => {
+    let index = 0;
+    sequence.split("").forEach((letter:string)=>{
+        switch(letter){
+            case 'A':
+                index += 1.8;
+            break;
+            case 'C':
+                index += 2.5;
+            break;
+            case 'D':
+                index += -3.5;
+            break;
+            case 'E':
+                index += -3.5;
+            break;
+            case 'F':
+                index += 2.8;
+            break;
+            case 'G':
+                index += -0.4;
+            break;
+            case 'H':
+                index += -3.2;
+            break;
+            case 'I':
+                index += 4.5;
+            break;
+            case 'K':
+                index += -3.9;
+            break;
+            case 'L':
+                index += 3.8;
+            break;
+            case 'M':
+                index += 1.9;
+            break;
+            case 'N':
+                index += -3.5;
+            break;
+            case 'P':
+                index += -1.6;
+            break;
+            case 'Q':
+                index += -3.5;
+            break;
+            case 'R':
+                index += -4.5;
+            break;
+            case 'S':
+                index += -0.8;
+            break;
+            case 'T':
+                index += -0.7;
+            break;
+            case 'V':
+                index += 4.2;
+            break;
+            case 'W':
+                index += -0.9;
+            break;
+            case 'Y':
+                index += -1.3;
+            break;
+        }
+    })
+    return index;
+}
 
 const getProteinInfo = (sequence:string) => {
     const info:any = []
     sequence.split("").forEach((letter:string)=>{
         info.push({
             letter:letter,
-            weight:countAminoAcidsWeight(letter)
+            weight:countAminoAcidsWeight(letter),
+            hydropathyIndex:countHydropathyIndex(letter),
+            pka:{
+                pka1:getAminoAcidspKa1(letter),
+                pka2:getAminoAcidspKa2(letter),
+                pka3:getAminoAcidspKa3(letter)
+            }
         })
     });
     return info;
