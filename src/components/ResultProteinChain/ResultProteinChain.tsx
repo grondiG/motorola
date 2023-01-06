@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { resolve } from 'node:path/win32';
 import React, {useEffect, useRef, useState} from 'react';
-import { useQuery } from 'react-query';
 import { MoonLoader } from 'react-spinners';
 import NavigationArrowDown from '../NavigationArrows/NavigationArrowDown';
 import NavigationArrowUp from '../NavigationArrows/NavigationArrowUp';
