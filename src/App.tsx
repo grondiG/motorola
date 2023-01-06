@@ -9,14 +9,26 @@ import ButtonContainer from './components/InputButtons/ButtonContainer';
 import { OrbitControls } from '@react-three/drei';
 import ResultProteinChain from './components/ResultProteinChain/ResultProteinChain';
 import ResultChart from './components/ResultChart/ResultChart';
+import axios from "axios";
 
 function App() {
   const [sequence, setSequence] = useState('');
   const [type, setType] = useState('');
   const [isSubmited, setIsSubmited] = useState(false);
+  const [proteinInfo, setProteinInfo] = useState('');
+  const [isChartVisible, setIsChartVisible] = useState(false);
+
+  const getSequence = (seq: string) => {
+    // axios.get(`/api/sequence/${seq}`).then((response) => {
+    axios.get(`/api/sequence/AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCC`).then((response) => {
+      setProteinInfo(response.data);
+    })
+  }
 
   useEffect(() => {
+    console.log(window.scrollY);
     if (isSubmited) {
+      getSequence(sequence);
       scrollTo({
         top: window.innerHeight,
         behavior: 'smooth',
@@ -56,8 +68,8 @@ function App() {
       </div>
       {isSubmited && (
         <>
-          <ResultProteinChain seq={sequence} setIsSubmited={setIsSubmited} isSubmited={isSubmited} />
-          <ResultChart />
+          <ResultProteinChain setIsChartVisible={setIsChartVisible} seq={sequence} setIsSubmited={setIsSubmited} isSubmited={isSubmited} />
+          <ResultChart proteinInfo={proteinInfo} isChartVisible={isChartVisible}/>
         </>
       )}
     </>

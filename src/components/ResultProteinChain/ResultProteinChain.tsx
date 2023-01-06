@@ -10,11 +10,13 @@ const ResultProteinChain = (props: {
   seq: string;
   setIsSubmited: Function;
   isSubmited: boolean;
+  setIsChartVisible: Function;
 }) => {
   const [img, setImg] = useState('');
   const [width, setWidth] = useState(0);
   const [isLoading,setIsLoading] = useState(true);
   const [isError,setIsError] = useState(false);
+  const [weight, setWeight] = useState(0);
 
   const imgRef:any = useRef();
 
@@ -39,10 +41,11 @@ const ResultProteinChain = (props: {
             console.log(image);
         }
   }
-  const query = async()=>{
+  const queryImg = async()=>{
       await axios
           .get(
-              `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
+              `/api/sequenceImg/AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCC`,
+              // `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
               { responseType: 'blob' }
           )
           .then((response) => {
@@ -56,9 +59,20 @@ const ResultProteinChain = (props: {
               });
           })
   }
+  const queryWeight = async()=>{
+        await axios
+            .get(
+                `/api/proteinWeight/AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCC`,
+                // `https://www.grondihub.live/api/proteinWeight/${props.seq}`,
+            )
+            .then((response) => {
+                setWeight(response.data.weight);
+            })
+  }
 
   useEffect(() => {
-      query().then(r => setIsLoading(false)).catch(e => setIsError(true));
+      queryImg().then(r => setIsLoading(false)).catch(e => setIsError(true));
+      queryWeight().then(r => setIsLoading(false)).catch(e => setIsError(true));
   }, []);
 
   // const { isLoading, error, data } = useQuery(
@@ -90,7 +104,10 @@ const ResultProteinChain = (props: {
                     <img ref={imgRef} src={img} style={{height:"100%"}} />
                 </div>
             </div>
-            <div className='flex w-screen justify-center mt-5'>
+              <div className={'flex justify-center items-center'}>
+              <p>Masa: {weight.toFixed(4)} <sup>g</sup>&frasl;<sub>mol</sub></p>
+                </div>
+              <div className='flex w-screen justify-center mt-5'>
               <button
                 className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl'
                 onClick={() => {
@@ -109,7 +126,7 @@ const ResultProteinChain = (props: {
           </div>
         )}
       </div>
-      <NavigationArrowDown />
+      <NavigationArrowDown setIsChartVisible={props.setIsChartVisible}/>
     </div>
   );
 };

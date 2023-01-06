@@ -1,9 +1,12 @@
-const NavigationArrowDown = () => {
+const NavigationArrowDown = (props:{
+  setIsChartVisible: any;
+}) => {
   const handleClick = () => {
     window.scrollBy({
       top: window.innerHeight,
       behavior: 'smooth',
     });
+    props.setIsChartVisible(true);
   };
 
   return (
