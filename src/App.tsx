@@ -25,7 +25,6 @@ function App() {
   }
 
   useEffect(() => {
-    console.log(window.scrollY);
     if (isSubmited) {
       getSequence(sequence);
       scrollTo({
