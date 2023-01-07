@@ -19,8 +19,7 @@ function App() {
   const [isChartVisible, setIsChartVisible] = useState(false);
 
   const getSequence = (seq: string) => {
-    axios.get(`/api/sequence/AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCC`).then((response) => {
-    // axios.get(`/api/sequence/${seq}`).then((response) => {
+    axios.get(`https://www.grondihub.live/api/sequence/${seq}`).then((response) => {
       setProteinInfo(response.data);
     })
   }
