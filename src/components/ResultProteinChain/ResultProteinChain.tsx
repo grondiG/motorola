@@ -31,12 +31,14 @@ const ResultProteinChain = (props: {
   }
 
   const getImg = (img:any, callback:any) =>{
+      setIsLoading(true)
       const blob = URL.createObjectURL(img);
       const image = new Image();
       image.src = blob;
         image.onload = () => {
             callback(image);
             console.log(image);
+            setIsLoading(false)
         }
   }
   const queryImg = async()=>{
@@ -69,8 +71,8 @@ const ResultProteinChain = (props: {
   }
 
   useEffect(() => {
-      queryImg().then(r => setIsLoading(false)).catch(e => setIsError(true));
-      queryWeight().then(r => setIsLoading(false)).catch(e => setIsError(true));
+      queryImg().then(r => console.log(r)).catch(e => setIsError(true));
+      queryWeight().then(r => console.log(r)).catch(e => setIsError(true));
   }, []);
 
   // const { isLoading, error, data } = useQuery(

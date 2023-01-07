@@ -1,11 +1,11 @@
 import NavigationArrowUp from '../NavigationArrows/NavigationArrowUp';
-
 import {
     LineChart,
     Line, Tooltip, CartesianGrid, YAxis, XAxis,
-    AreaChart, Area, ResponsiveContainer,
+    AreaChart, Area, ResponsiveContainer, ScatterChart, Scatter, BarChart, Bar, PieChart, Pie,
 } from "recharts";
-import {Ref, useEffect, useRef, useState} from "react";
+import React, {Ref, useEffect, useRef, useState} from "react";
+
 
 const ResultChart = (props:{
   proteinInfo: any;
@@ -22,7 +22,7 @@ const ResultChart = (props:{
     },[graphParent.current, props.isChartVisible, props.proteinInfo]);
 
   return (
-    <div className='w-screen h-screen'>
+    <div className='w-screen h-screen overflow-y-scroll'>
       <NavigationArrowUp />
         {props.proteinInfo && <div className='flex w-full h-full'>
             {props.isChartVisible&&<table className='mt-2 h-min w-full'>
@@ -37,7 +37,7 @@ const ResultChart = (props:{
           </thead>
             <tbody>
                 <tr>
-                    <td className='text-white text-2xl px-1.5'>Masa</td>
+                    <td className='text-white text-2xl px-1.5 text-right'>Masa</td>
                     <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
                         <AreaChart margin={{top:20, left:-20, right:30}}
                                    width={graphDimensions.width} height={150} data={props.proteinInfo.info}>
@@ -50,13 +50,13 @@ const ResultChart = (props:{
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="letter" />
                             <YAxis />
-                            <Tooltip itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
+                            <Tooltip formatter={(value,name)=>[value+'g/mol',name]} itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
                             <Area type="monotone" dataKey="weight" stroke="#8748b8" fillOpacity={1} fill="url(#colorUv)" />
                         </AreaChart>
                     </td>
                 </tr>
                 <tr>
-                    <td className='text-white text-2xl px-1.5'>Indeks hydrofobowy</td>
+                    <td className='text-white text-2xl px-1.5 text-right'>Indeks hydrofobowy</td>
                     <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
                         <AreaChart margin={{top:20, left:-20, right:30}}
                                    width={graphDimensions.width} height={150} data={props.proteinInfo.info}>
@@ -75,7 +75,7 @@ const ResultChart = (props:{
                     </td>
                 </tr>
                 <tr>
-                    <td className='text-white text-2xl px-1.5'>pKa</td>
+                    <td className='text-white text-2xl px-1.5 text-right'>pKa</td>
                     <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
                         <AreaChart margin={{top:20, left:-20, right:30}}
                                    width={graphDimensions.width} height={150} data={props.proteinInfo.info}>
@@ -103,6 +103,45 @@ const ResultChart = (props:{
                         </AreaChart>
                     </td>
                 </tr>
+            <tr>
+                <td className='text-white text-2xl px-1.5 text-right'>Punkt izoelektryczny</td>
+                <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
+                    <AreaChart margin={{top:20, left:-20, right:30}} width={graphDimensions.width} height={150} data={props.proteinInfo.info}>
+                        <defs>
+                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#8748b8" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="#8748b8" stopOpacity={0.1}/>
+                            </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="letter" />
+                        <YAxis />
+                        <Tooltip itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
+                        <Area type="monotone" dataKey="pi" stroke="#8748b8" fillOpacity={1} fill="url(#colorUv)" />
+                    </AreaChart>
+                </td>
+            </tr>
+                <tr>
+                    <td className='text-white text-2xl px-1.5 text-right'>Polarność</td>
+                    <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
+                        <BarChart margin={{top:20, left:-20, right:30}} width={graphDimensions.width} height={150} data={props.proteinInfo.info}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="letter" />
+                            <YAxis />
+                            <Tooltip formatter={(value,name)=>[value?'Polarny':'Nie polarny','Polarność']} contentStyle={{color:"#581C87"}}/>
+                            <Bar dataKey="polarity" fill="#8748b8" />
+                        </BarChart>
+                    </td>
+                </tr>
+            <tr>
+                <td className='text-white text-2xl px-1.5 text-right'>Występowanie aminokwasu w białku</td>
+                <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
+                    <PieChart className='ml-auto mr-auto' margin={{top:20, left:-20, right:30}} width={graphDimensions.width/2} height={graphDimensions.width/3}>
+                        <Pie data={props.proteinInfo.info} dataKey="residue" nameKey="letter" cx="50%" cy="50%" outerRadius={120} fill="#8748b8" label/>
+                        <Tooltip contentStyle={{color:"#581C87"}} formatter={(value,name)=>[value+"%",name]}/>
+                    </PieChart>
+                </td>
+            </tr>
             </tbody>
         </table>}
       </div>}
