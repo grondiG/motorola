@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAminoAcidspI = exports.getAminoAcidspKa3 = exports.getAminoAcidspKa2 = exports.getAminoAcidspKa1 = void 0;
+exports.getAminoAcidsWeight = exports.getHydropathyIndex = exports.getAminoAcidPolarity = exports.getAminoAcidspKa3 = exports.getAminoAcidspKa2 = exports.getAminoAcidspKa1 = void 0;
 const getAminoAcidspKa1 = (aminoAcid) => {
     switch (aminoAcid) {
         case 'A':
@@ -142,50 +142,188 @@ const getAminoAcidspKa3 = (aminoAcid) => {
     }
 };
 exports.getAminoAcidspKa3 = getAminoAcidspKa3;
-const getAminoAcidspI = (aminoAcid) => {
+const getAminoAcidPolarity = (aminoAcid) => {
     switch (aminoAcid) {
         case 'A':
-            return 6.00;
+            return 0;
         case 'C':
-            return 5.07;
+            return 0;
         case 'D':
-            return 2.77;
+            return 1;
         case 'E':
-            return 3.22;
+            return 1;
         case 'F':
-            return 5.48;
+            return 0;
         case 'G':
-            return 5.97;
+            return 0;
         case 'H':
-            return 7.59;
+            return 1;
         case 'I':
-            return 6.02;
+            return 0;
         case 'K':
-            return 9.74;
+            return 1;
         case 'L':
-            return 5.98;
+            return 0;
         case 'M':
-            return 5.74;
+            return 0;
         case 'N':
-            return 5.41;
+            return 1;
         case 'P':
-            return 6.30;
+            return 0;
         case 'Q':
-            return 5.65;
+            return 1;
         case 'R':
-            return 10.76;
+            return 1;
         case 'S':
-            return 5.68;
+            return 1;
         case 'T':
-            return 5.60;
+            return 1;
         case 'V':
-            return 5.96;
+            return 0;
         case 'W':
-            return 5.89;
+            return 0;
         case 'Y':
-            return 5.66;
+            return 0;
         default:
             return 0;
     }
 };
-exports.getAminoAcidspI = getAminoAcidspI;
+exports.getAminoAcidPolarity = getAminoAcidPolarity;
+const getHydropathyIndex = (sequence) => {
+    let index = 0;
+    sequence.split("").forEach((letter) => {
+        switch (letter) {
+            case 'A':
+                index += 1.8;
+                break;
+            case 'C':
+                index += 2.5;
+                break;
+            case 'D':
+                index += -3.5;
+                break;
+            case 'E':
+                index += -3.5;
+                break;
+            case 'F':
+                index += 2.8;
+                break;
+            case 'G':
+                index += -0.4;
+                break;
+            case 'H':
+                index += -3.2;
+                break;
+            case 'I':
+                index += 4.5;
+                break;
+            case 'K':
+                index += -3.9;
+                break;
+            case 'L':
+                index += 3.8;
+                break;
+            case 'M':
+                index += 1.9;
+                break;
+            case 'N':
+                index += -3.5;
+                break;
+            case 'P':
+                index += -1.6;
+                break;
+            case 'Q':
+                index += -3.5;
+                break;
+            case 'R':
+                index += -4.5;
+                break;
+            case 'S':
+                index += -0.8;
+                break;
+            case 'T':
+                index += -0.7;
+                break;
+            case 'V':
+                index += 4.2;
+                break;
+            case 'W':
+                index += -0.9;
+                break;
+            case 'Y':
+                index += -1.3;
+                break;
+        }
+    });
+    return index;
+};
+exports.getHydropathyIndex = getHydropathyIndex;
+const getAminoAcidsWeight = (sequence) => {
+    let weight = 0;
+    for (let i = 0; i < sequence.length; i++) {
+        switch (sequence[i]) {
+            case 'A':
+                weight += 89.1;
+                break;
+            case 'C':
+                weight += 121.2;
+                break;
+            case 'D':
+                weight += 133.1;
+                break;
+            case 'E':
+                weight += 147.1;
+                break;
+            case 'F':
+                weight += 165.2;
+                break;
+            case 'G':
+                weight += 75.1;
+                break;
+            case 'H':
+                weight += 155.2;
+                break;
+            case 'I':
+                weight += 131.2;
+                break;
+            case 'K':
+                weight += 146.2;
+                break;
+            case 'L':
+                weight += 131.2;
+                break;
+            case 'M':
+                weight += 149.2;
+                break;
+            case 'N':
+                weight += 132.1;
+                break;
+            case 'P':
+                weight += 115.1;
+                break;
+            case 'Q':
+                weight += 146.2;
+                break;
+            case 'R':
+                weight += 174.2;
+                break;
+            case 'S':
+                weight += 105.1;
+                break;
+            case 'T':
+                weight += 119.1;
+                break;
+            case 'V':
+                weight += 117.1;
+                break;
+            case 'W':
+                weight += 204.2;
+                break;
+            case 'Y':
+                weight += 181.2;
+                break;
+        }
+    }
+    return weight - (18.01528 * sequence.length);
+};
+exports.getAminoAcidsWeight = getAminoAcidsWeight;

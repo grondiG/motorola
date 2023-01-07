@@ -2,160 +2,30 @@ import express from 'express';
 import sizeOf from 'image-size';
 import {createCanvas, loadImage} from 'canvas';
 import images from 'images';
-import {getAminoAcidspKa1,getAminoAcidspKa3,getAminoAcidspKa2} from "./protein";
+import {getAminoAcidspKa1,getAminoAcidspKa3,getAminoAcidspKa2,getAminoAcidPolarity,
+    getHydropathyIndex,getAminoAcidsWeight} from "./protein";
 import fs from 'fs';
 
 const router = express.Router();
 
-const countAminoAcidsWeight = (sequence:string) => {
-    let weight = 0;
-    for(let i=0;i<sequence.length;i++){
-        switch(sequence[i]){
-            case 'A':
-                weight += 89.1;
-            break;
-            case 'C':
-                weight += 121.2;
-            break;
-            case 'D':
-                weight += 133.1;
-            break;
-            case 'E':
-                weight += 147.1;
-            break;
-            case 'F':
-                weight += 165.2;
-            break;
-            case 'G':
-                weight += 75.1;
-            break;
-            case 'H':
-                weight += 155.2;
-            break;
-            case 'I':
-                weight += 131.2;
-            break;
-            case 'K':
-                weight += 146.2;
-            break;
-            case 'L':
-                weight += 131.2;
-            break;
-            case 'M':
-                weight += 149.2;
-            break;
-            case 'N':
-                weight += 132.1;
-            break;
-            case 'P':
-                weight += 115.1;
-            break;
-            case 'Q':
-                weight += 146.2;
-            break;
-            case 'R':
-                weight += 174.2;
-            break;
-            case 'S':
-                weight += 105.1;
-            break;
-            case 'T':
-                weight += 119.1;
-            break;
-            case 'V':
-                weight += 117.1;
-            break;
-            case 'W':
-                weight += 204.2;
-            break;
-            case 'Y':
-                weight += 181.2;
-            break;
-        }
-    }
-    return weight - (18.01528*sequence.length);
-}
-const countHydropathyIndex = (sequence:string) => {
-    let index = 0;
-    sequence.split("").forEach((letter:string)=>{
-        switch(letter){
-            case 'A':
-                index += 1.8;
-            break;
-            case 'C':
-                index += 2.5;
-            break;
-            case 'D':
-                index += -3.5;
-            break;
-            case 'E':
-                index += -3.5;
-            break;
-            case 'F':
-                index += 2.8;
-            break;
-            case 'G':
-                index += -0.4;
-            break;
-            case 'H':
-                index += -3.2;
-            break;
-            case 'I':
-                index += 4.5;
-            break;
-            case 'K':
-                index += -3.9;
-            break;
-            case 'L':
-                index += 3.8;
-            break;
-            case 'M':
-                index += 1.9;
-            break;
-            case 'N':
-                index += -3.5;
-            break;
-            case 'P':
-                index += -1.6;
-            break;
-            case 'Q':
-                index += -3.5;
-            break;
-            case 'R':
-                index += -4.5;
-            break;
-            case 'S':
-                index += -0.8;
-            break;
-            case 'T':
-                index += -0.7;
-            break;
-            case 'V':
-                index += 4.2;
-            break;
-            case 'W':
-                index += -0.9;
-            break;
-            case 'Y':
-                index += -1.3;
-            break;
-        }
-    })
-    return index;
-}
+
+
 
 const getProteinInfo = (sequence:string) => {
     const info:any = []
     sequence.split("").forEach((letter:string)=>{
         info.push({
             letter:letter,
-            weight:countAminoAcidsWeight(letter),
-            hydropathyIndex:countHydropathyIndex(letter),
+            weight:Math.round((getAminoAcidsWeight(letter)+Number.EPSILON)*100)/100,
+            hydropathyIndex:getHydropathyIndex(letter),
             pka:{
                 pka1:getAminoAcidspKa1(letter),
                 pka2:getAminoAcidspKa2(letter),
                 pka3:getAminoAcidspKa3(letter)
-            }
+            },
+            polarity:getAminoAcidPolarity(letter),
+            pi:Math.round((((getAminoAcidspKa1(letter)+getAminoAcidspKa2(letter))/2)+Number.EPSILON)*100)/100,
+            residue:Math.round(((getAminoAcidsWeight(letter)/getAminoAcidsWeight(sequence)*100)+Number.EPSILON)*100)/100
         })
     });
     return info;
@@ -204,7 +74,6 @@ const createAndFillImage = async (imageData:any, sequence:string) => {
     })
     return path;
 }
-
 const getDurationInMilliseconds = (start:any) => {
     const NS_PER_SEC = 1e9
     const NS_TO_MS = 1e6
@@ -373,7 +242,7 @@ router.get("/api/sequence/:seq",(req,res)=>{
 
 router.get("/api/proteinWeight/:seq",(req,res)=>{
     let seq:string = getSequence(req.params.seq.toUpperCase());
-    res.status(200).json({weight:countAminoAcidsWeight(seq)});
+    res.status(200).json({weight:getAminoAcidsWeight(seq)});
 });
 
 export default router;
