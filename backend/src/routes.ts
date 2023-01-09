@@ -1,15 +1,11 @@
 import express from 'express';
 import sizeOf from 'image-size';
 import {createCanvas, loadImage} from 'canvas';
-import images from 'images';
 import {getAminoAcidspKa1,getAminoAcidspKa3,getAminoAcidspKa2,getAminoAcidPolarity,
     getHydropathyIndex,getAminoAcidsWeight} from "./protein";
 import fs from 'fs';
 
 const router = express.Router();
-
-
-
 
 const getProteinInfo = (sequence:string) => {
     const info:any = []
@@ -84,17 +80,28 @@ const getDurationInMilliseconds = (start:any) => {
 
 
 const getSequence = (sequence:string):string => {
- let output:string = "";
+    let output:string = "";
+    sequence = sequence.replaceAll("T","U");
 
     for(let i=0;i<sequence.length;i++){
         if(sequence.slice(i,i+3) === "AUG"){
             sequence = sequence.slice(i);
+            break;
         }
-    }  
+    }
+
+    let temp = sequence.match(/.{1,3}/g);
+
+    if(!temp?.includes('AUG')){
+        return "Brak kodonu startu";
+    }
+
+    if(!['UGA','UAG','UAA'].some(el=>temp?.includes(el))){
+        return "Brak kodonu stopu";
+    }
 
     for(let i=0;i<sequence.length;i+=3){
         const buffer = sequence.slice(i,i+3);
-        
         switch(buffer){
             case 'AUG':
                 output += "M"
@@ -199,11 +206,12 @@ const getSequence = (sequence:string):string => {
             break;
             case 'UAG':
             case 'UGA':
-            case 'UAA':
+            case 'UAA':{
                 console.log(`${new Date().toUTCString()}:  Output is ${output}`)
-            break;
+                return output;
+                }
             default:
-                return "Invalid";
+                return "Niepoprawna sekwencja";
         }
     }
     return output;
@@ -214,7 +222,10 @@ router.get("/api/sequenceImg/:seq",(req,res)=>{
     const start = process.hrtime();
    
     const output:string = getSequence(seq);
-
+    if(output.includes(" ")){
+        res.status(404).send(output);
+        return;
+    }
     const width = getFullWidth(output);
     const height = getMaxHeight(output);
     
@@ -236,12 +247,21 @@ router.get("/api/sequenceImg/:seq",(req,res)=>{
 })
 
 router.get("/api/sequence/:seq",(req,res)=>{
-    let seq:string = req.params.seq.toUpperCase();
-    res.status(200).json({sequence:getSequence(seq), info:getProteinInfo(getSequence(seq))});
+
+    let seq:string = getSequence(req.params.seq.toUpperCase());
+    if(seq.includes(" ")){
+        res.status(404).send(seq);
+        return;
+    }
+    res.status(200).json({sequence:seq, info:getProteinInfo(getSequence(req.params.seq.toUpperCase()))});
 });
 
 router.get("/api/proteinWeight/:seq",(req,res)=>{
     let seq:string = getSequence(req.params.seq.toUpperCase());
+    if(seq.includes(" ")){
+        res.status(404).send(seq);
+        return;
+    }
     res.status(200).json({weight:getAminoAcidsWeight(seq)});
 });
 
