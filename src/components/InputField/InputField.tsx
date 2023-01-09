@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
+import {FormEvent, useEffect, useRef} from 'react';
 import AnimatedLetter from './AnimatedLetter';
+import {DocumentTextIcon} from "@heroicons/react/20/solid";
+import './style.css'
 
 const InputField = (props: {
   sequence: string;
@@ -7,6 +9,7 @@ const InputField = (props: {
   type: string;
 }) => {
   const { sequence: value, setSequence: setValue } = props;
+  const fileInput = useRef(null);
 
   useEffect(() => {
     const handleEvent = (event: KeyboardEvent) => {
@@ -36,9 +39,17 @@ const InputField = (props: {
     };
   }, [props.type]);
 
+  const handleInput=(e:any)=>{
+    const fileLoad:FileReader = new FileReader()
+    fileLoad.readAsText(e.target.files[0]);
+    fileLoad.onload = () =>{
+      props.setSequence(fileLoad.result);
+    }
+  }
+
   return (
     <>
-      <div className='p-5 w-96 rounded-xl absolute right-0 text-white border-purple-500 border-2'>
+      <div className='p-5 w-96 rounded-xl absolute right-0 text-white border-purple-500 border-2 inputContent'>
         {value.length > 0
           ? [...value].map((value, index) => {
               return (
@@ -48,6 +59,10 @@ const InputField = (props: {
               );
             })
           : '\u00A0'}
+        <input type="file" className='hidden' id='file' ref={fileInput} accept='.txt' onInput={(e)=>handleInput(e)} />
+        <label htmlFor="file">
+        <DocumentTextIcon className='btnIcon'/>
+        </label>
       </div>
     </>
   );

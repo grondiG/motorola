@@ -19,8 +19,10 @@ function App() {
   const [isChartVisible, setIsChartVisible] = useState(false);
 
   const getSequence = (seq: string) => {
-    axios.get(`https://www.grondihub.live/api/sequence/${seq}`).then((response) => {
+    axios.get(`/api/sequence/${seq}`).then((response) => {
       setProteinInfo(response.data);
+    }).catch(e=>{
+      console.log(e);
     })
   }
 
@@ -45,7 +47,7 @@ function App() {
                 {type || 'RNA'}
               </span>
             </h1>
-            <AcidType sequence={sequence} type={type} setType={setType} />
+            <AcidType sequence={sequence} type={type} setType={setType} setSequence={setSequence} />
             <InputField
               sequence={sequence}
               setSequence={setSequence}

@@ -5,6 +5,7 @@ const AcidType = (props: {
   sequence: string;
   type: string;
   setType: Function;
+  setSequence:Function;
 }) => {
   const styleDNA = {
     width: '50%',
@@ -31,8 +32,19 @@ const AcidType = (props: {
     // test();
   }, [props.sequence]);
 
+  const toggleType = () => {
+    if(props.type === 'RNA'){
+      props.setType('DNA');
+      props.setSequence(props.sequence.replaceAll("T","U"));
+    }
+    else if(props.type === 'DNA'){
+      props.setType('RNA');
+      props.setSequence(props.sequence.replaceAll("U","T"));
+    }
+  }
+
   return (
-    <div className='flex border p-5 rounded-xl border-purple-500 absolute right-[400px]'>
+    <div className='flex border p-5 rounded-xl border-purple-500 absolute right-[400px] cursor-pointer' onClick={toggleType}>
       <div className='pr-2'>RNA</div>
       <div className='pl-2'>DNA</div>
       <div

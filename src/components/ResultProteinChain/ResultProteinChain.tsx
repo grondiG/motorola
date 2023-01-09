@@ -15,6 +15,7 @@ const ResultProteinChain = (props: {
   const [isLoading,setIsLoading] = useState(true);
   const [isError,setIsError] = useState(false);
   const [weight, setWeight] = useState(0);
+  const [errorMessage,setErrorMessage] = useState("");
 
   const imgRef:any = useRef();
 
@@ -31,7 +32,7 @@ const ResultProteinChain = (props: {
   }
 
   const getImg = (img:any, callback:any) =>{
-      setIsLoading(true)
+      setIsLoading(true);
       const blob = URL.createObjectURL(img);
       const image = new Image();
       image.src = blob;
@@ -44,11 +45,10 @@ const ResultProteinChain = (props: {
   const queryImg = async()=>{
       await axios
           .get(
-              `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
+              `/api/sequenceImg/${props.seq}`,
               { responseType: 'blob' }
           )
           .then((response) => {
-
               blobToDataURL(response.data, (dataUrl: any) => {
                   setImg(dataUrl);
 
@@ -56,29 +56,34 @@ const ResultProteinChain = (props: {
                       setWidth(image.width);
                   });
               });
+          }).catch(()=>{
+              setIsLoading(false);
+              setIsError(true);
           })
   }
   const queryWeight = async()=>{
         await axios
             .get(
-                `https://www.grondihub.live/api/proteinWeight/${props.seq}`,
+                `/api/proteinWeight/${props.seq}`,
             )
             .then((response) => {
                 setWeight(response.data.weight);
             })
+            .catch(e=>{
+                setIsLoading(false);
+                setIsError(true);
+                if(e.response){
+                    console.log(e.response)
+                    setErrorMessage(e.response.data);
+                }
+            })
   }
 
   useEffect(() => {
+      console.log("query");
       queryImg().then(r => console.log(r)).catch(e => setIsError(true));
       queryWeight().then(r => console.log(r)).catch(e => setIsError(true));
   }, []);
-
-  // const { isLoading, error, data } = useQuery(
-  //   'getSequenceImg',
-  //   async () =>
-  //
-  // );
-
 
   return (
     <div className='w-screen h-screen bg-purple-900'>
@@ -91,7 +96,7 @@ const ResultProteinChain = (props: {
         ) : isError ? (
           <div className='w-full h-full flex justify-center items-center'>
             <h1 className='text-5xl font-bold text-center'>
-              Nie można przetworzyć wpisanej sekwencji
+                {errorMessage.toString()}
             </h1>
           </div>
         ) : (
@@ -109,17 +114,16 @@ const ResultProteinChain = (props: {
               <button
                 className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl'
                 onClick={() => {
-                  const image = new Image();
-                  image.src = img;
-                  const w = window.open('/'+image.src);
-                  w?.document.write(image.outerHTML);
+                  window.open(img,'Image');
                 }}
               >
                 Otwórz w nowej karcie
               </button>
+                  <a href={img} download>
               <button className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl'>
                 Pobierz
               </button>
+                  </a>
             </div>
           </div>
         )}
