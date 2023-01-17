@@ -3,12 +3,16 @@ import React, {useEffect, useRef, useState} from 'react';
 import { MoonLoader } from 'react-spinners';
 import NavigationArrowDown from '../NavigationArrows/NavigationArrowDown';
 import NavigationArrowUp from '../NavigationArrows/NavigationArrowUp';
+import NavigationArrowRight from '../NavigationArrows/NavigationArrowRight';
+import NavigationArrowLeft from '../NavigationArrows/NavigationArrowLeft';
 
 const ResultProteinChain = (props: {
   seq: string;
   setIsSubmited: Function;
   isSubmited: boolean;
   setIsChartVisible: Function;
+  index: number;
+  length: number;
 }) => {
   const [img, setImg] = useState('');
   const [width, setWidth] = useState(0);
@@ -86,8 +90,20 @@ const ResultProteinChain = (props: {
   }, []);
 
   return (
-    <div className='w-screen h-screen bg-purple-900'>
-      <NavigationArrowUp onClick={handleReset} />
+    <div className='w-screen h-screen bg-purple-900 relative'>
+      {props.index === 0 ?
+        <NavigationArrowUp onClick={handleReset} />
+      :<div className='m-[5%]'></div>
+      }
+      {props.index !== props.length - 1 && (
+        <NavigationArrowRight />
+      )
+      }
+      {
+        props.index === props.length - 1 && (
+          <NavigationArrowLeft />
+        )
+      }
       <div className='h-[80%]'>
         {isLoading ? (
           <div className='w-full h-full flex justify-center items-center'>

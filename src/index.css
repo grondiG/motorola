@@ -28,6 +28,18 @@
 body {
   overflow: hidden;
 }
+.result{
+  width: auto;
+  height: 200vh;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.result-item{
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
   ::selection {
     background-color: rgb(126 34 206);

@@ -15,24 +15,60 @@ function App() {
   const [sequence, setSequence] = useState('');
   const [type, setType] = useState('');
   const [isSubmited, setIsSubmited] = useState(false);
-  const [proteinInfo, setProteinInfo] = useState('');
+  const [proteinInfo, setProteinInfo] = useState<any[]>([]);
   const [isChartVisible, setIsChartVisible] = useState(false);
+  const [splitSequence, setSplitSequence] = useState<string[]>([]);
 
   const getSequence = (seq: string) => {
-    axios.get(`/api/sequence/${seq}`).then((response) => {
-      setProteinInfo(response.data);
-    }).catch(e=>{
-      console.log(e);
-    })
-  }
-
-  useEffect(() => {
-    if (isSubmited) {
-      getSequence(sequence);
+    for(let i=0;i<seq.length;i++){
+        if(seq.slice(i,i+3) === "AUG" || seq.slice(i,i+3) === "ATG"){
+            seq = seq.slice(i);
+            break;
+        }
+    }
+    seq = seq.replaceAll("T","U");
+    const temp = seq.match(/.{1,3}/g) || [];
+    let split:string[] = [''];
+    temp.forEach((item, index) => {
+      console.log(item);
+      if(item === "UAA" || item === "UAG" || item === "UGA"){
+        split[split.length-1]+=item;
+        split.push('');
+        return;
+      }
+      else{
+        split[split.length-1]+=item;
+        return;
+      }
+    });
+    split = split.filter(item => item !== '');
+    console.log(split);
+    setSplitSequence(split);
+    split.forEach((item, index) => {
+    axios.get(`/api/sequence/${item}`).then((response) => {
+      setProteinInfo(oldData=>[...oldData, response.data]);
       scrollTo({
         top: window.innerHeight,
         behavior: 'smooth',
       });
+    }).catch(e=>{
+      console.log(e);
+    })
+  });
+    
+  }
+
+  useEffect(() => {
+    scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+  },[]);
+
+  useEffect(() => {
+    if(isSubmited){
+      getSequence(sequence);
     }
   }, [isSubmited]);
 
@@ -66,12 +102,25 @@ function App() {
           <Rna seq={sequence} />
         </Canvas>
       </div>
+      <div className={`result`}>
       {isSubmited && (
+        splitSequence.map((seq, index) => {
+          return (
+            <div className={`result-item`}>
+              <ResultProteinChain setIsChartVisible={setIsChartVisible} seq={seq} setIsSubmited={setIsSubmited}
+               isSubmited={isSubmited} length={splitSequence.length} index={index} />
+              <ResultChart proteinInfo={proteinInfo[index]} isChartVisible={isChartVisible}/>
+            </div>
+          )
+        }))
+      }
+      </div>
+      {/* {isSubmited && (
         <>
           <ResultProteinChain setIsChartVisible={setIsChartVisible} seq={sequence} setIsSubmited={setIsSubmited} isSubmited={isSubmited} />
           <ResultChart proteinInfo={proteinInfo} isChartVisible={isChartVisible}/>
         </>
-      )}
+      )} */}
     </>
   );
 }
