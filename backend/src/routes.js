@@ -56,13 +56,13 @@ const getMaxHeight = (sequence) => {
 const createAndFillImage = (imageData, sequence) => __awaiter(void 0, void 0, void 0, function* () {
     const canvas = (0, canvas_1.createCanvas)(imageData.width, imageData.height);
     const context = canvas.getContext("2d");
-    const path = "./output/image.png";
+    const path = `./output/${Date.now()}.png`;
     const coords = {
         x: 0,
         y: 0
     };
-    yield sequence.split("").forEach((letter) => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, canvas_1.loadImage)(`assets/${letter}.png`).then((image) => {
+    sequence.split("").forEach((letter, index) => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, canvas_1.loadImage)(`assets/${index % 2 == 0 ? letter : letter + "_rev"}.png`).then((image) => {
             coords.y = (imageData.height - image.height) / 2;
             context.drawImage(image, coords.x, coords.y, image.width, image.height);
             coords.x += image.width;
@@ -215,6 +215,7 @@ const getSequence = (sequence) => {
 };
 router.get("/api/sequenceImg/:seq", (req, res) => {
     let seq = req.params.seq.toUpperCase();
+    console.log(seq);
     const start = process.hrtime();
     const output = getSequence(seq);
     if (output.includes(" ")) {
@@ -229,13 +230,16 @@ router.get("/api/sequenceImg/:seq", (req, res) => {
         .then((path) => {
         image = path;
     })
-        .finally(() => {
+        .finally(() => __awaiter(void 0, void 0, void 0, function* () {
         const path = __dirname.substring(0, __dirname.length - 4) + image.substring(1);
         console.log(`${new Date().toUTCString()}:  Sending image as response on path ${path}`);
         const duration = getDurationInMilliseconds(start);
         console.log(`${new Date().toUTCString()}:  Response time is ${duration.toLocaleString()}ms`);
-        res.status(200).sendFile(path);
-    });
+        console.log(image);
+        res.status(200).sendFile(path, () => {
+            fs_1.default.unlinkSync(path);
+        });
+    }));
 });
 router.get("/api/sequence/:seq", (req, res) => {
     let seq = getSequence(req.params.seq.toUpperCase());

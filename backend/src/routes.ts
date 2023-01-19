@@ -50,24 +50,24 @@ const getMaxHeight = (sequence:string) => {
 const createAndFillImage = async (imageData:any, sequence:string) => {
     const canvas = createCanvas(imageData.width, imageData.height);
     const context = canvas.getContext("2d");
-    const path = "./output/image.png";
+    const path = `./output/${Date.now()}.png`;
 
     const coords:any = {
         x:0,
         y:0
     }
-    await sequence.split("").forEach(async (letter:string)=>{
-        await loadImage(`assets/${letter}.png`).then((image)=>{
-            coords.y = (imageData.height - image.height)/2;
+    sequence.split("").forEach( async(letter:string, index:number)=>{
+        await loadImage(`assets/${index%2==0?letter:letter+"_rev"}.png`).then((image) => {
+            coords.y = (imageData.height - image.height) / 2;
             context.drawImage(image, coords.x, coords.y, image.width, image.height);
             coords.x += image.width;
         })
-        .then(()=>{
-            const buffer = canvas.toBuffer("image/png");
-            fs.writeFileSync(path,buffer);
-            console.log(`${new Date().toUTCString()}:  Adding element to image on path ${path}`)
-        })
-    })
+            .then(() => {
+                const buffer = canvas.toBuffer("image/png");
+                fs.writeFileSync(path, buffer);
+                console.log(`${new Date().toUTCString()}:  Adding element to image on path ${path}`);
+            });
+    });
     return path;
 }
 const getDurationInMilliseconds = (start:any) => {
@@ -219,6 +219,7 @@ const getSequence = (sequence:string):string => {
 
 router.get("/api/sequenceImg/:seq",(req,res)=>{
     let seq:string = req.params.seq.toUpperCase();
+    console.log(seq);
     const start = process.hrtime();
    
     const output:string = getSequence(seq);
@@ -237,12 +238,15 @@ router.get("/api/sequenceImg/:seq",(req,res)=>{
     .then((path)=>{
         image = path;
     })
-    .finally(()=>{
+    .finally(async ()=>{
         const path = __dirname.substring(0,__dirname.length-4) + image.substring(1);
         console.log(`${new Date().toUTCString()}:  Sending image as response on path ${path}`);
         const duration = getDurationInMilliseconds(start);
         console.log(`${new Date().toUTCString()}:  Response time is ${duration.toLocaleString()}ms`);
-        res.status(200).sendFile(path);
+        console.log(image);
+        res.status(200).sendFile(path,()=>{
+            fs.unlinkSync(path);
+        });
     })
 })
 
