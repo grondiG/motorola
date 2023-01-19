@@ -56,7 +56,7 @@ const getMaxHeight = (sequence) => {
 const createAndFillImage = (imageData, sequence) => __awaiter(void 0, void 0, void 0, function* () {
     const canvas = (0, canvas_1.createCanvas)(imageData.width, imageData.height);
     const context = canvas.getContext("2d");
-    const path = `./output/${Date.now()}.png`;
+    const path = `./${Date.now()}.png`;
     const coords = {
         x: 0,
         y: 0
