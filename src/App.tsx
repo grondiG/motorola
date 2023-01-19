@@ -27,25 +27,12 @@ function App() {
         }
     }
     seq = seq.replaceAll("T","U");
-    const temp = seq.match(/.{1,3}/g) || [];
-    let split:string[] = [''];
-    temp.forEach((item, index) => {
-      console.log(item);
-      if(item === "UAA" || item === "UAG" || item === "UGA"){
-        split[split.length-1]+=item;
-        split.push('');
-        return;
-      }
-      else{
-        split[split.length-1]+=item;
-        return;
-      }
-    });
-    split = split.filter(item => item !== '');
+    const split = seq.match(/(AUG.*?[AUGC]{3,3}(?:UAG|UAA|UGA))/g) || [];
     console.log(split);
     setSplitSequence(split);
     split.forEach((item, index) => {
     axios.get(`/api/sequence/${item}`).then((response) => {
+      console.log(response);
       setProteinInfo(oldData=>[...oldData, response.data]);
       scrollTo({
         top: window.innerHeight,
@@ -67,6 +54,7 @@ function App() {
   },[]);
 
   useEffect(() => {
+    setProteinInfo([]);
     if(isSubmited){
       getSequence(sequence);
     }
@@ -105,6 +93,7 @@ function App() {
       <div className={`result`}>
       {isSubmited && (
         splitSequence.map((seq, index) => {
+          console.log(index,proteinInfo);
           return (
             <div className={`result-item`}>
               <ResultProteinChain setIsChartVisible={setIsChartVisible} seq={seq} setIsSubmited={setIsSubmited}
@@ -115,12 +104,6 @@ function App() {
         }))
       }
       </div>
-      {/* {isSubmited && (
-        <>
-          <ResultProteinChain setIsChartVisible={setIsChartVisible} seq={sequence} setIsSubmited={setIsSubmited} isSubmited={isSubmited} />
-          <ResultChart proteinInfo={proteinInfo} isChartVisible={isChartVisible}/>
-        </>
-      )} */}
     </>
   );
 }

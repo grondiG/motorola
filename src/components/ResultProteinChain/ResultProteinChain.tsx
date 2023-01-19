@@ -85,6 +85,7 @@ const ResultProteinChain = (props: {
 
   useEffect(() => {
       console.log("query");
+      console.log(props.length);
       queryImg().then(r => console.log(r)).catch(e => setIsError(true));
       queryWeight().then(r => console.log(r)).catch(e => setIsError(true));
   }, []);
@@ -100,7 +101,7 @@ const ResultProteinChain = (props: {
       )
       }
       {
-        props.index === props.length - 1 && (
+          (props.index === props.length - 1 && props.length - 1 !== 0) && (
           <NavigationArrowLeft />
         )
       }
