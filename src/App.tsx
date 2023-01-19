@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import InputField from './components/InputField/InputField';
-import React from 'react';
 import { Canvas, extend } from '@react-three/fiber';
 import Rna from './assets/Rna';
 import AcidType from './components/AcidType/AcidType';
 import InputCaption from './components/InputCaption/InputCaption';
 import ButtonContainer from './components/InputButtons/ButtonContainer';
-import { OrbitControls } from '@react-three/drei';
 import ResultProteinChain from './components/ResultProteinChain/ResultProteinChain';
 import ResultChart from './components/ResultChart/ResultChart';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
 function App() {
@@ -30,6 +30,18 @@ function App() {
     const split = seq.match(/(AUG.*?[AUGC]{3,3}(?:UAG|UAA|UGA))/g) || [];
     console.log(split);
     setSplitSequence(split);
+    if(split.length===0){
+      let temp = seq.match(/.{1,3}/g);
+      if(!temp?.find(item=>item==="AUG" || item==="ATG")){
+        toast.error("Brak kodonu startu");
+      }
+      if(!temp?.find(item=>item==="UAG" || item==="UAA" || item==="UGA")){
+        toast.error("Brak kodonu stopu");
+      }
+      toast.error("Niepoprawna sekwencja białka");
+      setIsSubmited(false);
+      return;
+    }
     split.forEach((item, index) => {
     axios.get(`/api/sequence/${item}`).then((response) => {
       console.log(response);
@@ -104,6 +116,7 @@ function App() {
         }))
       }
       </div>
+      <ToastContainer theme="dark" />
     </>
   );
 }
