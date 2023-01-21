@@ -7,6 +7,7 @@ const InputField = (props: {
   sequence: string;
   setSequence: Function;
   type: string;
+  setIsSubmited: Function;
 }) => {
   const { sequence: value, setSequence: setValue } = props;
   const fileInput = useRef(null);
@@ -16,7 +17,7 @@ const InputField = (props: {
       if (event.key === 'Backspace') {
         setValue((prev: string) => prev.slice(0, -1));
       } else if (event.key === 'Enter') {
-        alert('Submited');
+        props.setIsSubmited(true);
       } else if (event.key.match(/^[acguACGUtT]$/)) {
         if (props.type === 'DNA' && event.key.toLocaleUpperCase() === 'T') {
           setValue((prev: string) => prev + 'U');

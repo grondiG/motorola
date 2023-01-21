@@ -21,14 +21,12 @@ const ResultProteinChain = (props: {
   const [weight, setWeight] = useState(0);
   const [errorMessage,setErrorMessage] = useState("");
 
-  const imgRef:any = useRef();
-
   function handleReset() {
     props.setIsSubmited(false);
   }
 
   function blobToDataURL(blob: any, callback: any) {
-    var a = new FileReader();
+    let a = new FileReader();
     a.onload = function (e) {
       callback(e.target?.result);
     };
@@ -57,7 +55,7 @@ const ResultProteinChain = (props: {
                   setImg(dataUrl);
 
                   getImg(response.data, (image:any) => {
-                      setWidth(image.width);
+                      setWidth(image.width*0.81);
                   });
               });
           }).catch(()=>{
@@ -101,7 +99,7 @@ const ResultProteinChain = (props: {
       )
       }
       {
-          (props.index === props.length - 1 && props.length - 1 !== 0) && (
+          (props.index <= props.length - 1 && props.length - 1 !== 0 && props.index !==0) && (
           <NavigationArrowLeft />
         )
       }
@@ -119,9 +117,9 @@ const ResultProteinChain = (props: {
         ) : (
           <div className='w-full h-full'>
             <h1 className='text-5xl font-bold text-center mb-8'>Sekwencja:</h1>
-            <div style={{height:"40vh",width:"100%",overflowX:"auto"}}>
+            <div style={{height:"42vh",width:"100%",overflowX:"auto",padding:"2rem 0"}}>
                 <div style={{height:"100%", width:width,marginLeft:"1rem"}}>
-                    <img ref={imgRef} src={img} style={{height:"100%"}} />
+                    <img src={img} style={{height:"100%"}} />
                 </div>
             </div>
               <div className={'flex justify-center items-center'}>

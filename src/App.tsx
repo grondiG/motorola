@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
 import InputField from './components/InputField/InputField';
-import { Canvas, extend } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import Rna from './assets/Rna';
 import AcidType from './components/AcidType/AcidType';
 import InputCaption from './components/InputCaption/InputCaption';
 import ButtonContainer from './components/InputButtons/ButtonContainer';
-import ResultProteinChain from './components/ResultProteinChain/ResultProteinChain';
-import ResultChart from './components/ResultChart/ResultChart';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
+import Result from './components/Result/Result';
 
 function App() {
   const [sequence, setSequence] = useState('');
   const [type, setType] = useState('');
   const [isSubmited, setIsSubmited] = useState(false);
   const [proteinInfo, setProteinInfo] = useState<any[]>([]);
-  const [isChartVisible, setIsChartVisible] = useState(false);
   const [splitSequence, setSplitSequence] = useState<string[]>([]);
 
   const getSequence = (seq: string) => {
@@ -27,8 +25,7 @@ function App() {
         }
     }
     seq = seq.replaceAll("T","U");
-    const split = seq.match(/(AUG.*?[AUGC]{3,3}(?:UAG|UAA|UGA))/g) || [];
-    console.log(split);
+    const split = seq.match(/(AUG(?:[AUGC]{3,3})*?(?:UAG|UAA|UGA))/g) || [];
     setSplitSequence(split);
     if(split.length===0){
       let temp = seq.match(/.{1,3}/g);
@@ -42,18 +39,15 @@ function App() {
       setIsSubmited(false);
       return;
     }
-    split.forEach((item, index) => {
-    axios.get(`/api/sequence/${item}`).then((response) => {
+    axios.get(`/api/sequences/${seq}`).then((response) => {
+      setProteinInfo(response.data.sequences);
       console.log(response);
-      setProteinInfo(oldData=>[...oldData, response.data]);
       scrollTo({
         top: window.innerHeight,
         behavior: 'smooth',
-      });
-    }).catch(e=>{
+      })}).catch(e=>{
       console.log(e);
-    })
-  });
+    });
     
   }
 
@@ -67,6 +61,7 @@ function App() {
 
   useEffect(() => {
     setProteinInfo([]);
+    setSplitSequence([]);
     if(isSubmited){
       getSequence(sequence);
     }
@@ -88,6 +83,7 @@ function App() {
               sequence={sequence}
               setSequence={setSequence}
               type={type}
+              setIsSubmited={setIsSubmited}
             />
             <ButtonContainer
               sequence={sequence}
@@ -107,11 +103,8 @@ function App() {
         splitSequence.map((seq, index) => {
           console.log(index,proteinInfo);
           return (
-            <div className={`result-item`}>
-              <ResultProteinChain setIsChartVisible={setIsChartVisible} seq={seq} setIsSubmited={setIsSubmited}
-               isSubmited={isSubmited} length={splitSequence.length} index={index} />
-              <ResultChart proteinInfo={proteinInfo[index]} isChartVisible={isChartVisible}/>
-            </div>
+              <Result seq={seq} setIsSubmited={setIsSubmited} isSubmited={isSubmited} index={index}
+              proteinInfo={proteinInfo[index]} length={splitSequence.length}/>
           )
         }))
       }
