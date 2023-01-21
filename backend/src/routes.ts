@@ -91,7 +91,6 @@ const getSequence = (sequence:string):string => {
     }
 
     let temp = sequence.match(/.{1,3}/g);
-
     if(!temp?.includes('AUG')){
         return "Brak kodonu startu";
     }
@@ -219,7 +218,6 @@ const getSequence = (sequence:string):string => {
 
 router.get("/api/sequenceImg/:seq",(req,res)=>{
     let seq:string = req.params.seq.toUpperCase();
-    console.log(seq);
     const start = process.hrtime();
    
     const output:string = getSequence(seq);
@@ -243,7 +241,6 @@ router.get("/api/sequenceImg/:seq",(req,res)=>{
         console.log(`${new Date().toUTCString()}:  Sending image as response on path ${path}`);
         const duration = getDurationInMilliseconds(start);
         console.log(`${new Date().toUTCString()}:  Response time is ${duration.toLocaleString()}ms`);
-        console.log(image);
         res.status(200).sendFile(path,()=>{
             fs.unlinkSync(path);
         });
@@ -258,6 +255,17 @@ router.get("/api/sequence/:seq",(req,res)=>{
         return;
     }
     res.status(200).json({sequence:seq, info:getProteinInfo(getSequence(req.params.seq.toUpperCase()))});
+});
+router.get("/api/sequences/:seq",(req,res)=>{
+    let seq:string[] = req.params.seq.match(/(AUG(?:[AUGC]{3,3})*?(?:UAG|UAA|UGA))/g) || [];
+    let output:any[] = [];
+    seq.forEach((el)=>{
+        let temp = getSequence(el);
+        if(!temp.includes(" ")){
+            output.push({sequence:temp, info:getProteinInfo(getSequence(el.toUpperCase()))});
+        }
+    });
+    res.status(200).json({sequences:output});
 });
 
 router.get("/api/proteinWeight/:seq",(req,res)=>{

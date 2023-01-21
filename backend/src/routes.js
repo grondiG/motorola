@@ -215,7 +215,6 @@ const getSequence = (sequence) => {
 };
 router.get("/api/sequenceImg/:seq", (req, res) => {
     let seq = req.params.seq.toUpperCase();
-    console.log(seq);
     const start = process.hrtime();
     const output = getSequence(seq);
     if (output.includes(" ")) {
@@ -235,7 +234,6 @@ router.get("/api/sequenceImg/:seq", (req, res) => {
         console.log(`${new Date().toUTCString()}:  Sending image as response on path ${path}`);
         const duration = getDurationInMilliseconds(start);
         console.log(`${new Date().toUTCString()}:  Response time is ${duration.toLocaleString()}ms`);
-        console.log(image);
         res.status(200).sendFile(path, () => {
             fs_1.default.unlinkSync(path);
         });
@@ -248,6 +246,17 @@ router.get("/api/sequence/:seq", (req, res) => {
         return;
     }
     res.status(200).json({ sequence: seq, info: getProteinInfo(getSequence(req.params.seq.toUpperCase())) });
+});
+router.get("/api/sequences/:seq", (req, res) => {
+    let seq = req.params.seq.match(/(AUG(?:[AUGC]{3,3})*?(?:UAG|UAA|UGA))/g) || [];
+    let output = [];
+    seq.forEach((el) => {
+        let temp = getSequence(el);
+        if (!temp.includes(" ")) {
+            output.push({ sequence: temp, info: getProteinInfo(getSequence(el.toUpperCase())) });
+        }
+    });
+    res.status(200).json({ sequences: output });
 });
 router.get("/api/proteinWeight/:seq", (req, res) => {
     let seq = getSequence(req.params.seq.toUpperCase());
