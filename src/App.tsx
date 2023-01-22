@@ -39,7 +39,7 @@ function App() {
       setIsSubmited(false);
       return;
     }
-    axios.get(`/api/sequences/${seq}`).then((response) => {
+    axios.get(`https://www.grondihub.live/api/sequences/${seq}`).then((response) => {
       setProteinInfo(response.data.sequences);
       toast.dismiss();
       scrollTo({

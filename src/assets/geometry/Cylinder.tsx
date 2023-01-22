@@ -1,6 +1,4 @@
 import {useEffect, useRef} from "react";
-import Tube from "./Tube";
-import {useFrame} from "@react-three/fiber";
 
 const Cylinder = (props: any) => {
     const mesh = useRef<any>(null);

@@ -1,5 +1,4 @@
 import {useEffect, useRef} from "react";
-import Tube from "./Tube";
 import Cylinder from "./Cylinder";
 import BallRight from "./BallRight";
 import BallLeft from "./BallLeft";

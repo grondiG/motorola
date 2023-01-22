@@ -1,8 +1,5 @@
-import React, {useEffect, useRef} from "react";
+import {useRef} from "react";
 import {useFrame} from "@react-three/fiber";
-import Cylinder from "./geometry/Cylinder";
-import BallRight from "./geometry/BallRight";
-import BallLeft from "./geometry/BallLeft";
 import {useThree} from "@react-three/fiber";
 import RnaBranch from "./geometry/RnaBranch";
 import { OrbitControls } from "@react-three/drei";
