@@ -55,7 +55,7 @@ const ResultProteinChain = (props: {
                   setImg(dataUrl);
 
                   getImg(response.data, (image:any) => {
-                      setWidth(image.width*0.80);
+                      setWidth(image.width*0.61);
                   });
               });
           }).catch(()=>{
