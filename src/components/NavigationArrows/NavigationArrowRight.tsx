@@ -7,7 +7,7 @@ const NavigationArrowRight = () => {
   };
 
   return (
-    <div className='h-[10%] flex justify-center items-center rotate-[270deg] absolute top-[50%] translate-y-[-100%] right-5'>
+    <div className='h-[10%] flex justify-center items-center rotate-[270deg] absolute top-[50%] translate-y-[-100%] right-5 opacity'>
       <div className='cursor-pointer'>
         <svg
           onClick={handleClick}

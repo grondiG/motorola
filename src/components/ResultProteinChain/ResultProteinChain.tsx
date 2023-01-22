@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { MoonLoader } from 'react-spinners';
 import NavigationArrowDown from '../NavigationArrows/NavigationArrowDown';
 import NavigationArrowUp from '../NavigationArrows/NavigationArrowUp';
@@ -55,7 +55,7 @@ const ResultProteinChain = (props: {
                   setImg(dataUrl);
 
                   getImg(response.data, (image:any) => {
-                      setWidth(image.width*0.81);
+                      setWidth(image.width*0.60);
                   });
               });
           }).catch(()=>{
@@ -82,8 +82,6 @@ const ResultProteinChain = (props: {
   }
 
   useEffect(() => {
-      console.log("query");
-      console.log(props.length);
       queryImg().then(r => console.log(r)).catch(e => setIsError(true));
       queryWeight().then(r => console.log(r)).catch(e => setIsError(true));
   }, []);
@@ -116,10 +114,11 @@ const ResultProteinChain = (props: {
           </div>
         ) : (
           <div className='w-full h-full'>
-            <h1 className='text-5xl font-bold text-center mb-8'>Sekwencja:</h1>
-            <div style={{height:"42vh",width:"100%",overflowX:"auto",padding:"2rem 0"}}>
-                <div style={{height:"100%", width:width,marginLeft:"1rem"}}>
-                    <img src={img} style={{height:"100%"}} />
+            <h1 className='text-5xl font-bold text-center mb-8 '>Sekwencja:</h1>
+            <div style={{height:"42vh",width:"100%",overflowX:"auto",padding:"2rem 0"}}
+            className={(window.innerWidth<=width?'':'flex justify-center')}>
+                <div style={{height:"100%", width:width,whiteSpace:"nowrap",padding:"0 2rem"}}>
+                    <img src={img} style={{height:"100%",whiteSpace:"nowrap"}} />
                 </div>
             </div>
               <div className={'flex justify-center items-center'}>
@@ -127,7 +126,7 @@ const ResultProteinChain = (props: {
                 </div>
               <div className='flex w-screen justify-center mt-5'>
               <button
-                className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl'
+                className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl opacity'
                 onClick={() => {
                   window.open(img,'Image');
                 }}
@@ -135,7 +134,7 @@ const ResultProteinChain = (props: {
                 Otwórz w nowej karcie
               </button>
                   <a href={img} download>
-              <button className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl'>
+              <button className='bg-black text-white font-bold p-5 my-5 mr-5 rounded-xl opacity'>
                 Pobierz
               </button>
                   </a>

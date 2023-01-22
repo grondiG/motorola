@@ -18,7 +18,7 @@ const ButtonContainer = (props: {
       }}
     >
       <ResetButton setSequence={props.setSequence} />
-      <SubmitButton setIsSubmited={props.setIsSubmited} />
+      <SubmitButton setIsSubmited={props.setIsSubmited} sequence={props.sequence} />
     </div>
   );
 };

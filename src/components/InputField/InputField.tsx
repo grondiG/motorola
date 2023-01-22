@@ -10,14 +10,15 @@ const InputField = (props: {
   setIsSubmited: Function;
 }) => {
   const { sequence: value, setSequence: setValue } = props;
-  const fileInput = useRef(null);
 
   useEffect(() => {
     const handleEvent = (event: KeyboardEvent) => {
       if (event.key === 'Backspace') {
         setValue((prev: string) => prev.slice(0, -1));
       } else if (event.key === 'Enter') {
-        props.setIsSubmited(true);
+        if(value.length > 0){
+          props.setIsSubmited(true);
+        }
       } else if (event.key.match(/^[acguACGUtT]$/)) {
         if (props.type === 'DNA' && event.key.toLocaleUpperCase() === 'T') {
           setValue((prev: string) => prev + 'U');
@@ -44,7 +45,9 @@ const InputField = (props: {
     const fileLoad:FileReader = new FileReader()
     fileLoad.readAsText(e.target.files[0]);
     fileLoad.onload = () =>{
-      props.setSequence(fileLoad.result);
+      let temp = fileLoad.result?.toString().replace(/[tT]/,"U");
+      temp = temp?.replace(/(\r\n|\n|\r)/gm, "");
+      props.setSequence(temp?.replace(/(?![AUGCaugc])[A-z]/g, "").toUpperCase());
     }
   }
 
@@ -60,7 +63,7 @@ const InputField = (props: {
               );
             })
           : '\u00A0'}
-        <input type="file" className='hidden' id='file' ref={fileInput} accept='.txt' onInput={(e)=>handleInput(e)} />
+        <input type="file" className='hidden' id='file' accept='.txt' onInput={(e)=>handleInput(e)} />
         <label htmlFor="file">
         <DocumentTextIcon className='btnIcon'/>
         </label>

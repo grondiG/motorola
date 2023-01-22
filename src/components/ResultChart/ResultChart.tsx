@@ -22,7 +22,7 @@ const ResultChart = (props:{
     },[graphParent.current, props.isChartVisible, props.proteinInfo]);
 
   return (
-    <div className='w-screen h-screen overflow-y-scroll'>
+    <div className='w-screen h-screen overflow-y-scroll overflow-x-hidden'>
       <NavigationArrowUp />
         {props.proteinInfo && <div className='flex w-full h-full'>
             {props.isChartVisible&&<table className='mt-2 h-min w-full'>

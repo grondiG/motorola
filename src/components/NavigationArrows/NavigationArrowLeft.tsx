@@ -7,7 +7,7 @@ const NavigationArrowLeft = () => {
   };
 
   return (
-    <div className='h-[10%] flex justify-center items-center rotate-[90deg] absolute top-[50%] translate-y-[-100%] left-5'>
+    <div className='h-[10%] flex justify-center items-center rotate-[90deg] absolute top-[50%] translate-y-[-100%] left-5 opacity'>
       <div className='cursor-pointer'>
         <svg
           onClick={handleClick}

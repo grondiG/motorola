@@ -41,7 +41,7 @@ function App() {
     }
     axios.get(`/api/sequences/${seq}`).then((response) => {
       setProteinInfo(response.data.sequences);
-      console.log(response);
+      toast.dismiss();
       scrollTo({
         top: window.innerHeight,
         behavior: 'smooth',

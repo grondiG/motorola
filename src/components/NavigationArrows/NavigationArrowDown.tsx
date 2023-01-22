@@ -10,7 +10,7 @@ const NavigationArrowDown = (props:{
   };
 
   return (
-    <div className='h-[10%] flex justify-center items-center'>
+    <div className='h-[10%] flex justify-center items-center opacity'>
       <div className='cursor-pointer'>
         <svg
           onClick={handleClick}

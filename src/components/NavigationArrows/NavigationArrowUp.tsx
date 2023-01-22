@@ -10,7 +10,7 @@ const NavigationArrowUp = (props: { onClick?: Function }) => {
   };
 
   return (
-    <div className='w-screen h-[10%] p-2 flex justify-center '>
+    <div className='w-screen h-[10%] p-2 flex justify-center opacity'>
       <svg
         onClick={handleClick}
         xmlns='http://www.w3.org/2000/svg'

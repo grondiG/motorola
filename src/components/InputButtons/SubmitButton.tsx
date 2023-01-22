@@ -1,6 +1,8 @@
-const SubmitButton = (props: { setIsSubmited: Function }) => {
+const SubmitButton = (props: { setIsSubmited: Function; sequence: string; }) => {
   const handleSubmit = () => {
-    props.setIsSubmited(true);
+    if(props.sequence.length > 0){
+      props.setIsSubmited(true);
+    }
   };
 
   return (
