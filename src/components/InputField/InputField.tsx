@@ -16,7 +16,7 @@ const InputField = (props: {
       if (event.key === 'Backspace') {
         setValue((prev: string) => prev.slice(0, -1));
       } else if (event.key === 'Enter') {
-        if(value.length > 0){
+        if(props.sequence.length > 0){
           props.setIsSubmited(true);
         }
       } else if (event.key.match(/^[acguACGUtT]$/)) {
