@@ -48,7 +48,7 @@ const getMaxHeight = (sequence:string) => {
 }
 
 const createAndFillImage = async (imageData:any, sequence:string) => {
-    const canvas = createCanvas(imageData.width, imageData.height);
+    const canvas = createCanvas(imageData.width, imageData.height*1.4);
     const context = canvas.getContext("2d");
     const path = `./${Date.now()}.png`;
 
@@ -58,8 +58,11 @@ const createAndFillImage = async (imageData:any, sequence:string) => {
     }
     sequence.split("").forEach( async(letter:string, index:number)=>{
         await loadImage(`assets/${index%2==0?letter:letter+"_rev"}.png`).then((image) => {
-            coords.y = (imageData.height - image.height) / 2;
-            context.drawImage(image, coords.x, coords.y, image.width, image.height);
+            coords.y = index%2==0?(image.height/2):(imageData.height*1.3 - image.height) / 2; 
+            if(image.height<280){
+                coords.y += image.height/3;
+            }
+            context.drawImage(image, coords.x, coords.y-30, image.width, image.height);
             coords.x += image.width;
         })
             .then(() => {

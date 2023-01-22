@@ -54,7 +54,7 @@ const getMaxHeight = (sequence) => {
     return imgHeights.sort()[imgHeights.length - 1];
 };
 const createAndFillImage = (imageData, sequence) => __awaiter(void 0, void 0, void 0, function* () {
-    const canvas = (0, canvas_1.createCanvas)(imageData.width, imageData.height);
+    const canvas = (0, canvas_1.createCanvas)(imageData.width, imageData.height * 1.4);
     const context = canvas.getContext("2d");
     const path = `./${Date.now()}.png`;
     const coords = {
@@ -63,8 +63,11 @@ const createAndFillImage = (imageData, sequence) => __awaiter(void 0, void 0, vo
     };
     sequence.split("").forEach((letter, index) => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, canvas_1.loadImage)(`assets/${index % 2 == 0 ? letter : letter + "_rev"}.png`).then((image) => {
-            coords.y = (imageData.height - image.height) / 2;
-            context.drawImage(image, coords.x, coords.y, image.width, image.height);
+            coords.y = index % 2 == 0 ? (image.height / 2) : (imageData.height * 1.3 - image.height) / 2;
+            if (image.height < 280) {
+                coords.y += image.height / 3;
+            }
+            context.drawImage(image, coords.x, coords.y - 30, image.width, image.height);
             coords.x += image.width;
         })
             .then(() => {
