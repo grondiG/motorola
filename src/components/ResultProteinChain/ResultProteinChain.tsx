@@ -55,7 +55,7 @@ const ResultProteinChain = (props: {
                   setImg(dataUrl);
 
                   getImg(response.data, (image:any) => {
-                      setWidth(image.width*0.61);
+                      setWidth(image.width);
                   });
               });
           }).catch(()=>{
@@ -117,8 +117,8 @@ const ResultProteinChain = (props: {
             <h1 className='text-5xl font-bold text-center mb-8 '>Sekwencja:</h1>
             <div style={{height:"42vh",width:"100%",overflowX:"auto",padding:"2rem 0"}}
             className={(window.innerWidth<=width?'':'flex justify-center')}>
-                <div style={{height:"100%", width:width,whiteSpace:"nowrap",padding:"0 2rem"}}>
-                    <img src={img} style={{height:"100%", width:"100%",whiteSpace:"nowrap"}} />
+                <div style={{height:"100%", width:(width<window.innerWidth?width:width*0.6),whiteSpace:"nowrap",padding:"0 2rem"}}>
+                    <img src={img} style={{height:"100%",whiteSpace:"nowrap",margin:(width<window.innerWidth?'auto auto':'0 0')}} />
                 </div>
             </div>
               <div className={'flex justify-center items-center'}>

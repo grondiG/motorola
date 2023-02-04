@@ -2,7 +2,7 @@ import NavigationArrowUp from '../NavigationArrows/NavigationArrowUp';
 import {
     LineChart,
     Line, Tooltip, CartesianGrid, YAxis, XAxis,
-    AreaChart, Area, ResponsiveContainer, ScatterChart, Scatter, BarChart, Bar, PieChart, Pie,
+    AreaChart, Area, ResponsiveContainer, ScatterChart, Scatter, BarChart, Bar, PieChart, Pie, Legend,
 } from "recharts";
 import React, {Ref, useEffect, useRef, useState} from "react";
 
@@ -50,7 +50,7 @@ const ResultChart = (props:{
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="letter" />
                             <YAxis />
-                            <Tooltip formatter={(value,name)=>[value+'g/mol',name]} itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
+                            <Tooltip formatter={(value,name)=>[value+'g/mol',"Masa"]} itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
                             <Area type="monotone" dataKey="weight" stroke="#8748b8" fillOpacity={1} fill="url(#colorUv)" />
                         </AreaChart>
                     </td>
@@ -69,16 +69,16 @@ const ResultChart = (props:{
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="letter" />
                             <YAxis />
-                            <Tooltip itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
+                            <Tooltip formatter={(value)=>[value,'Indeks']} itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
                             <Area type="monotone" dataKey="hydropathyIndex" stroke="#8748b8" fillOpacity={1} fill="url(#colorUv)" />
                         </AreaChart>
                     </td>
                 </tr>
-                <tr>
+                <tr className="h-[25vh]">
                     <td className='text-white text-2xl px-1.5 text-right'>pKa</td>
                     <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
                         <AreaChart margin={{top:20, left:-20, right:30}}
-                                   width={graphDimensions.width} height={150} data={props.proteinInfo.info}>
+                                   width={graphDimensions.width} height={200} data={props.proteinInfo.info}>
                             <defs>
                                 <linearGradient id="color1" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="5%" stopColor="#8748b8" stopOpacity={0.8}/>
@@ -97,6 +97,7 @@ const ResultChart = (props:{
                             <XAxis dataKey="letter" />
                             <YAxis />
                             <Tooltip formatter={(value,name,props)=>[value,name.toString().substring(4,name.toString().length)]} itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
+                            <Legend formatter={(value,name,props)=>[value.toString().substring(4,name.toString().length)]} />
                             <Area type="monotone" dataKey="pka.pka1" stroke="#8748b8" fillOpacity={1} fill="url(#color1)" />
                             <Area type="monotone" dataKey="pka.pka2" stroke="#48b8a9" fillOpacity={1} fill="url(#color2)" />
                             <Area type="monotone" dataKey="pka.pka3" stroke="#b84848" fillOpacity={1} fill="url(#color3)" />
@@ -128,7 +129,7 @@ const ResultChart = (props:{
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="letter" />
                             <YAxis />
-                            <Tooltip formatter={(value,name)=>[value?'Polarny':'Nie polarny','Polarność']} contentStyle={{color:"#581C87"}}/>
+                            <Tooltip formatter={(value)=>[value?'Polarny':'Nie polarny','Polarność']} contentStyle={{color:"#581C87"}}/>
                             <Bar dataKey="polarity" fill="#8748b8" />
                         </BarChart>
                     </td>
