@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAminoAcidsWeight = exports.getHydropathyIndex = exports.getAminoAcidPolarity = exports.getAminoAcidspKa3 = exports.getAminoAcidspKa2 = exports.getAminoAcidspKa1 = void 0;
+exports.getAminoAcidSolubility = exports.getAminoAcidsWeight = exports.getHydropathyIndex = exports.getAminoAcidPolarity = exports.getAminoAcidMeltingPoint = exports.getAminoAcidspKa3 = exports.getAminoAcidspKa2 = exports.getAminoAcidspKa1 = void 0;
 const getAminoAcidspKa1 = (aminoAcid) => {
     switch (aminoAcid) {
         case 'A':
@@ -142,6 +142,53 @@ const getAminoAcidspKa3 = (aminoAcid) => {
     }
 };
 exports.getAminoAcidspKa3 = getAminoAcidspKa3;
+const getAminoAcidMeltingPoint = (aminoAcid) => {
+    switch (aminoAcid) {
+        case 'A':
+            return 300;
+        case 'C':
+            return 244;
+        case 'D':
+            return 270;
+        case 'E':
+            return 199;
+        case 'F':
+            return 278;
+        case 'G':
+            return 233;
+        case 'H':
+            return 285;
+        case 'I':
+            return 288;
+        case 'K':
+            return 215;
+        case 'L':
+            return 286;
+        case 'M':
+            return 281;
+        case 'N':
+            return 235;
+        case 'P':
+            return 228;
+        case 'Q':
+            return 185;
+        case 'R':
+            return 244;
+        case 'S':
+            return 235;
+        case 'T':
+            return 256;
+        case 'V':
+            return 298;
+        case 'W':
+            return 290;
+        case 'Y':
+            return 343;
+        default:
+            return NaN;
+    }
+};
+exports.getAminoAcidMeltingPoint = getAminoAcidMeltingPoint;
 const getAminoAcidPolarity = (aminoAcid) => {
     switch (aminoAcid) {
         case 'A':
@@ -185,7 +232,7 @@ const getAminoAcidPolarity = (aminoAcid) => {
         case 'Y':
             return 0;
         default:
-            return 0;
+            return NaN;
     }
 };
 exports.getAminoAcidPolarity = getAminoAcidPolarity;
@@ -327,3 +374,72 @@ const getAminoAcidsWeight = (sequence) => {
     return weight - (18.01528 * sequence.length);
 };
 exports.getAminoAcidsWeight = getAminoAcidsWeight;
+const getAminoAcidSolubility = (sequence) => {
+    let solubility = 0;
+    for (let i = 0; i < sequence.length; i++) {
+        switch (sequence[i]) {
+            case 'A':
+                solubility = 1;
+                break;
+            case 'C':
+                solubility = 0;
+                break;
+            case 'D':
+                solubility = -1;
+                break;
+            case 'E':
+                solubility = -1;
+                break;
+            case 'F':
+                solubility = -1;
+                break;
+            case 'G':
+                solubility = 1;
+                break;
+            case 'H':
+                solubility = 0;
+                break;
+            case 'I':
+                solubility = -1;
+                break;
+            case 'K':
+                solubility = 1;
+                break;
+            case 'L':
+                solubility = -1;
+                break;
+            case 'M':
+                solubility = -1;
+                break;
+            case 'N':
+                solubility = 0;
+                break;
+            case 'P':
+                solubility = 0;
+                break;
+            case 'Q':
+                solubility = 0;
+                break;
+            case 'R':
+                solubility = 1;
+                break;
+            case 'S':
+                solubility = 1;
+                break;
+            case 'T':
+                solubility = 1;
+                break;
+            case 'V':
+                solubility = -1;
+                break;
+            case 'W':
+                solubility = 0;
+                break;
+            case 'Y':
+                solubility = -1;
+                break;
+        }
+    }
+    return solubility;
+};
+exports.getAminoAcidSolubility = getAminoAcidSolubility;

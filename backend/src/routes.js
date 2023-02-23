@@ -32,7 +32,9 @@ const getProteinInfo = (sequence) => {
             },
             polarity: (0, protein_1.getAminoAcidPolarity)(letter),
             pi: Math.round(((((0, protein_1.getAminoAcidspKa1)(letter) + (0, protein_1.getAminoAcidspKa2)(letter)) / 2) + Number.EPSILON) * 100) / 100,
-            residue: Math.round((((0, protein_1.getAminoAcidsWeight)(letter) / (0, protein_1.getAminoAcidsWeight)(sequence) * 100) + Number.EPSILON) * 100) / 100
+            residue: Math.round((((0, protein_1.getAminoAcidsWeight)(letter) / (0, protein_1.getAminoAcidsWeight)(sequence) * 100) + Number.EPSILON) * 100) / 100,
+            meltingPoint: (0, protein_1.getAminoAcidMeltingPoint)(letter),
+            solubility: (0, protein_1.getAminoAcidSolubility)(letter)
         });
     });
     return info;

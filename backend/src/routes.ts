@@ -1,8 +1,10 @@
 import express from 'express';
 import sizeOf from 'image-size';
 import {createCanvas, loadImage} from 'canvas';
-import {getAminoAcidspKa1,getAminoAcidspKa3,getAminoAcidspKa2,getAminoAcidPolarity,
-    getHydropathyIndex,getAminoAcidsWeight} from "./protein";
+import {
+    getAminoAcidspKa1, getAminoAcidspKa3, getAminoAcidspKa2, getAminoAcidPolarity,
+    getHydropathyIndex, getAminoAcidsWeight, getAminoAcidMeltingPoint, getAminoAcidSolubility
+} from "./protein";
 import fs from 'fs';
 
 const router = express.Router();
@@ -21,7 +23,9 @@ const getProteinInfo = (sequence:string) => {
             },
             polarity:getAminoAcidPolarity(letter),
             pi:Math.round((((getAminoAcidspKa1(letter)+getAminoAcidspKa2(letter))/2)+Number.EPSILON)*100)/100,
-            residue:Math.round(((getAminoAcidsWeight(letter)/getAminoAcidsWeight(sequence)*100)+Number.EPSILON)*100)/100
+            residue:Math.round(((getAminoAcidsWeight(letter)/getAminoAcidsWeight(sequence)*100)+Number.EPSILON)*100)/100,
+            meltingPoint:getAminoAcidMeltingPoint(letter),
+            solubility:getAminoAcidSolubility(letter)
         })
     });
     return info;
