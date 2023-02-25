@@ -47,7 +47,8 @@ const ResultProteinChain = (props: {
   const queryImg = async()=>{
       await axios
           .get(
-              `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
+              // `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
+              `/api/sequenceImg/${props.seq}`,
               { responseType: 'blob' }
           )
           .then((response) => {
@@ -66,7 +67,8 @@ const ResultProteinChain = (props: {
   const queryWeight = async()=>{
         await axios
             .get(
-                `https://www.grondihub.live/api/proteinWeight/${props.seq}`,
+                `/api/proteinWeight/${props.seq}`,
+                // `https://www.grondihub.live/api/proteinWeight/${props.seq}`,
             )
             .then((response) => {
                 setWeight(response.data.weight);

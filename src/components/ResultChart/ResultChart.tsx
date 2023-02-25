@@ -123,6 +123,42 @@ const ResultChart = (props:{
                 </td>
             </tr>
                 <tr>
+                    <td className='text-white text-2xl px-1.5 text-right'>Temperatura topnienia</td>
+                    <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
+                        <AreaChart margin={{top:20, left:-20, right:30}} width={graphDimensions.width} height={150} data={props.proteinInfo.info}>
+                            <defs>
+                                <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#48b893" stopOpacity={0.8}/>
+                                    <stop offset="95%" stopColor="#48b893" stopOpacity={0.1}/>
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="letter" />
+                            <YAxis />
+                            <Tooltip formatter={(value, name) => [value+String.fromCodePoint(8451),'Temperatura']} itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
+                            <Area type="monotone" dataKey="meltingPoint" stroke="#48b893" fillOpacity={1} fill="url(#colorTemp)" />
+                        </AreaChart>
+                    </td>
+                </tr>
+                <tr>
+                    <td className='text-white text-2xl px-1.5 text-right'>Rozpuszczalność w wodzie</td>
+                    <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
+                        <AreaChart margin={{top:20, left:-20, right:30}} width={graphDimensions.width} height={150} data={props.proteinInfo.info}>
+                            <defs>
+                                <linearGradient id="colorSol" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#b84848" stopOpacity={0.8}/>
+                                    <stop offset="95%" stopColor="#b84848" stopOpacity={0.1}/>
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="letter" />
+                            <YAxis />
+                            <Tooltip formatter={(value, name) => [value===1?'Dobrze rozpuszczalne':value===0?'Ciężko stwierdzić':'Słabo rozpuszczalne','Rozpuszczalność']} itemStyle={{color:"#000000"}} contentStyle={{color:"#581C87"}}/>
+                            <Area type="monotone" dataKey="solubility" stroke="#b84848" fillOpacity={1} fill="url(#colorSol)" />
+                        </AreaChart>
+                    </td>
+                </tr>
+                <tr>
                     <td className='text-white text-2xl px-1.5 text-right'>Polarność</td>
                     <td colSpan={props.proteinInfo.sequence.length} className='w-full' ref={graphParent}>
                         <BarChart margin={{top:20, left:-20, right:30}} width={graphDimensions.width} height={150} data={props.proteinInfo.info}>

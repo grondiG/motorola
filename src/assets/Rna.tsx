@@ -32,8 +32,7 @@ const Rna = (props: any) => {
     return (
         <>
         <group ref={mesh}>
-            { props.seq.split('').map((text:string, i:number) => {
-                console.log(text.length)
+            { props.seq.substring(0,40).split('').map((text:string, i:number) => {
                 return (
                 <>
                 <RnaBranch i={i} last={text.slice(-1)}  />
