@@ -38,14 +38,18 @@ function App() {
       toast.error("Niepoprawna sekwencja białka");
       setIsSubmited(false);
       return;
+
+    }
+    else{
+      scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth',
+      });
     }
     axios.get(`https://www.grondihub.live/api/sequences/${seq}`).then((response) => {
       setProteinInfo(response.data.sequences);
       toast.dismiss();
-      scrollTo({
-        top: window.innerHeight,
-        behavior: 'smooth',
-      })}).catch(e=>{
+      }).catch(e=>{
       console.log(e);
     });
     
@@ -66,6 +70,14 @@ function App() {
       getSequence(sequence);
     }
   }, [isSubmited]);
+
+  window.onbeforeunload = function () {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }
 
   return (
     <>
