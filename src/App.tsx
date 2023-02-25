@@ -39,8 +39,7 @@ function App() {
       setIsSubmited(false);
       return;
     }
-    axios.get(`/api/sequences/${seq}`).then((response) => {
-    // axios.get(`https://www.grondihub.live/api/sequences/${seq}`).then((response) => {
+    axios.get(`https://www.grondihub.live/api/sequences/${seq}`).then((response) => {
       setProteinInfo(response.data.sequences);
       toast.dismiss();
       scrollTo({
@@ -102,7 +101,6 @@ function App() {
       <div className={`result`}>
       {isSubmited && (
         splitSequence.map((seq, index) => {
-          console.log(index,proteinInfo);
           return (
               <Result seq={seq} setIsSubmited={setIsSubmited} isSubmited={isSubmited} index={index}
               proteinInfo={proteinInfo[index]} length={splitSequence.length}/>

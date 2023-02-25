@@ -16,7 +16,6 @@ const ResultChart = (props:{
 
     useEffect(()=>{
         if(graphParent.current){
-            console.log(props.proteinInfo.info);
             setGraphDimensons({height:graphParent.current.offsetHeight, width: graphParent.current.offsetWidth});
         }
     },[graphParent.current, props.isChartVisible, props.proteinInfo]);

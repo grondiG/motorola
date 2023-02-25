@@ -16,10 +16,6 @@ const AcidType = (props: {
     width: '50%',
     left: '50%',
   };
-  // const test = async() =>{
-  //   const response = await axios.get("/api/sequence/AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCCUAA");
-  //   console.log(response.data);
-  // }
 
   useEffect(() => {
     if (props.sequence.includes('T')) {
