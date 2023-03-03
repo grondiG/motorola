@@ -18,6 +18,7 @@ Z aplikacji można korzystać poprzez hosting, ale ponad to można uruchomić j�
 ### Pobieranie kodu źródłowego
 ```bash
 git clone https://github.com/grondiG/motorola.git
+git submodule update --init
 ```
 ### Instalacja paczek
 Aby aplikacja działała poprawnie należy zainstalować odpowiednie paczki.
