@@ -11,9 +11,9 @@ const ButtonContainer = (props: {
       className='absolute right-0 w-96 flex justify-between items-center gap-6'
       style={{
         top: `calc(16rem + ${
-          props.sequence.length > 0
-            ? (Math.ceil(props.sequence.length / 29) - 1) * 1.5
-            : 0
+            (props.sequence.length > 0
+            ? (Math.ceil(props.sequence.length / 29) - 1) * 1.5<12.5?(Math.ceil(props.sequence.length / 29) - 1) * 1.5:12.5
+            : 0) + 0.5
         }rem)`,
       }}
     >

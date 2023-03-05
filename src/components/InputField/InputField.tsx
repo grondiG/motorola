@@ -8,29 +8,35 @@ const InputField = (props: {
   setSequence: Function;
   type: string;
   setIsSubmited: Function;
+  minInput: any;
 }) => {
   const { sequence: value, setSequence: setValue } = props;
+  const input = useRef(null);
 
   useEffect(() => {
     const handleEvent = (event: KeyboardEvent) => {
-      if (event.key === 'Backspace') {
-        setValue((prev: string) => prev.slice(0, -1));
-      } else if (event.key === 'Enter') {
-        if(props.sequence.length > 0){
-          props.setIsSubmited(true);
+      if(props.minInput.current !== document.activeElement) {
+        if (event.key === 'Backspace') {
+          setValue((prev: string) => prev.slice(0, -1));
+        } else if (event.key === 'Enter') {
+          if (props.sequence.length > 0) {
+            props.setIsSubmited(true);
+          }
+        } else if (event.key.match(/^[acguACGUtT]$/)) {
+          if (props.type === 'DNA' && event.key.toLocaleUpperCase() === 'T') {
+            setValue((prev: string) => prev + 'U');
+          } else if (
+              props.type === 'RNA' &&
+              event.key.toLocaleUpperCase() === 'U'
+          ) {
+            setValue((prev: string) => prev + 'T');
+            return;
+          } else {
+            setValue((prev: string) => prev + event.key.toLocaleUpperCase());
+          }
         }
-      } else if (event.key.match(/^[acguACGUtT]$/)) {
-        if (props.type === 'DNA' && event.key.toLocaleUpperCase() === 'T') {
-          setValue((prev: string) => prev + 'U');
-        } else if (
-          props.type === 'RNA' &&
-          event.key.toLocaleUpperCase() === 'U'
-        ) {
-          setValue((prev: string) => prev + 'T');
-          return;
-        } else {
-          setValue((prev: string) => prev + event.key.toLocaleUpperCase());
-        }
+        // @ts-ignore
+        input.current.scroll({left: 0, top: input.current.scrollHeight, behavior: 'smooth'});
       }
     };
 
@@ -39,6 +45,8 @@ const InputField = (props: {
     return () => {
       document.removeEventListener('keydown', handleEvent, false);
     };
+
+
   }, [props.type]);
 
   const handleInput=(e:any)=>{
@@ -53,7 +61,9 @@ const InputField = (props: {
 
   return (
     <>
-      <div className='p-5 w-96 rounded-xl absolute right-0 text-white border-purple-500 border-2 inputContent'>
+      <input type="file" className='hidden' id='file' accept='.txt' onInput={(e)=>handleInput(e)} />
+      <div className='p-5 w-96 rounded-xl absolute right-0 text-white border-purple-500 border-2 inputContent'
+      ref={input}>
         {value.length > 0
           ? [...value].map((value, index) => {
               return (
@@ -63,7 +73,6 @@ const InputField = (props: {
               );
             })
           : '\u00A0'}
-        <input type="file" className='hidden' id='file' accept='.txt' onInput={(e)=>handleInput(e)} />
         <label htmlFor="file">
         <DocumentTextIcon className='btnIcon'/>
         </label>

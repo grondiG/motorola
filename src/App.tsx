@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {ReactEventHandler, useEffect, useState, useRef} from 'react';
 import InputField from './components/InputField/InputField';
 import { Canvas } from '@react-three/fiber';
 import Rna from './assets/Rna';
@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import Result from './components/Result/Result';
+import {min} from "three/examples/jsm/nodes/shadernode/ShaderNodeBaseElements";
 
 function App() {
   const [sequence, setSequence] = useState('');
@@ -16,6 +17,9 @@ function App() {
   const [isSubmited, setIsSubmited] = useState(false);
   const [proteinInfo, setProteinInfo] = useState<any[]>([]);
   const [splitSequence, setSplitSequence] = useState<string[]>([]);
+  const [minSequenceLength, setMinSequenceLength] = useState(100);
+
+  const minInput = useRef(null);
 
   const getSequence = (seq: string) => {
     for(let i=0;i<seq.length;i++){
@@ -25,6 +29,14 @@ function App() {
         }
     }
     seq = seq.replaceAll("T","U");
+    console.log(minSequenceLength);
+
+    if(seq.length/3<minSequenceLength){
+        toast.error("Zbyt krótka sekwencja białka względem minimalnej wartości");
+        setIsSubmited(false);
+        return;
+    }
+
     const split = seq.match(/(AUG(?:[AUGC]{3,3})*?(?:UAG|UAA|UGA))/g) || [];
     setSplitSequence(split);
     if(split.length===0){
@@ -46,7 +58,7 @@ function App() {
         behavior: 'smooth',
       });
     }
-    axios.get(`https://www.grondihub.live/api/sequences/${seq}`).then((response) => {
+    axios.get(`/api/sequences/${seq}`).then((response) => {
       setProteinInfo(response.data.sequences);
       toast.dismiss();
       }).catch(e=>{
@@ -72,11 +84,7 @@ function App() {
   }, [isSubmited]);
 
   window.onbeforeunload = function () {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
+    window.history.scrollRestoration = 'manual';
   }
 
   return (
@@ -96,6 +104,7 @@ function App() {
               setSequence={setSequence}
               type={type}
               setIsSubmited={setIsSubmited}
+              minInput={minInput}
             />
             <ButtonContainer
               sequence={sequence}
@@ -106,6 +115,10 @@ function App() {
         </div>
 
         <InputCaption />
+        <input ref={minInput} value={minSequenceLength} type="number" className="minAminoAcidCount" min="2" defaultValue={100} step={1} onInput={(event:any)=>{
+          event.target.value = event.target.value.replace(/[^0-9]/g, '');
+          setMinSequenceLength(parseInt(event.target.value));
+        }} title="Minimalna wartość ilości aminokwasów w białku (domyślnie 100)" placeholder="Minimalna wartość ilości aminokwasów w białku (domyślnie 100)"/>
         <Canvas className='h-full w-full'>
           <Rna seq={sequence} />
         </Canvas>
@@ -113,8 +126,9 @@ function App() {
       <div className={`result`}>
       {isSubmited && (
         splitSequence.map((seq, index) => {
+          console.log(proteinInfo[index]?.sequence);
           return (
-              <Result seq={seq} setIsSubmited={setIsSubmited} isSubmited={isSubmited} index={index}
+              <Result seq={proteinInfo[index]?.sequence} setIsSubmited={setIsSubmited} isSubmited={isSubmited} index={index}
               proteinInfo={proteinInfo[index]} length={splitSequence.length}/>
           )
         }))

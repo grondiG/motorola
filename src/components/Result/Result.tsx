@@ -12,11 +12,11 @@ const Result = (props:{
 }) =>{
 
     const [isChartVisible,setIsChartVisible] = useState<boolean>(false);
-
+    console.log(props.seq);
     return (
         <div className={`result-item`}>
             <ResultProteinChain setIsChartVisible={setIsChartVisible} seq={props.seq} setIsSubmited={props.setIsSubmited}
-               isSubmited={props.isSubmited} length={props.length} index={props.index}/>
+               isSubmited={props.isSubmited} length={props.length} index={props.index} weight={props.proteinInfo}/>
             <ResultChart proteinInfo={props.proteinInfo} isChartVisible={isChartVisible}/>
         </div>
     )

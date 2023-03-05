@@ -13,17 +13,19 @@ const ResultProteinChain = (props: {
   setIsChartVisible: Function;
   index: number;
   length: number;
+  weight: number;
 }) => {
   const [img, setImg] = useState('');
   const [width, setWidth] = useState(0);
   const [isLoading,setIsLoading] = useState(true);
   const [isError,setIsError] = useState(false);
-  const [weight, setWeight] = useState(0);
   const [errorMessage,setErrorMessage] = useState("");
 
   function handleReset() {
     props.setIsSubmited(false);
   }
+    console.log(props.seq);
+
 
   function blobToDataURL(blob: any, callback: any) {
     let a = new FileReader();
@@ -43,16 +45,15 @@ const ResultProteinChain = (props: {
             setIsLoading(false)
         }
   }
-  const queryImg = async()=>{
-      await axios
+  const queryImg = ()=>{
+       axios
           .get(
-              `https://www.grondihub.live/api/sequenceImg/${props.seq}`,
+              `/api/sequenceImg/${props.seq}`,
               { responseType: 'blob' }
           )
           .then((response) => {
               blobToDataURL(response.data, (dataUrl: any) => {
                   setImg(dataUrl);
-
                   getImg(response.data, (image:any) => {
                       setWidth(image.width);
                   });
@@ -62,28 +63,12 @@ const ResultProteinChain = (props: {
               setIsError(true);
           })
   }
-  const queryWeight = async()=>{
-        await axios
-            .get(
-                `https://www.grondihub.live/api/proteinWeight/${props.seq}`,
-            )
-            .then((response) => {
-                setWeight(response.data.weight);
-            })
-            .catch(e=>{
-                setIsLoading(false);
-                setIsError(true);
-                if(e.response){
-                    console.log(e.response)
-                    setErrorMessage(e.response.data);
-                }
-            })
-  }
 
   useEffect(() => {
-      queryImg().then(r => console.log(r)).catch(e => setIsError(true));
-      queryWeight().then(r => console.log(r)).catch(e => setIsError(true));
-  }, []);
+      if(props.seq) {
+          queryImg();
+      }
+  }, [props.seq]);
 
   return (
     <div className='w-screen h-screen bg-purple-900 relative'>
@@ -121,7 +106,7 @@ const ResultProteinChain = (props: {
                 </div>
             </div>
               <div className={'flex justify-center items-center'}>
-              <p>Masa: {weight.toFixed(4)} <sup>g</sup>&frasl;<sub>mol</sub></p>
+              <p>Masa: {props.weight.toFixed(4)} <sup>g</sup>&frasl;<sub>mol</sub></p>
                 </div>
               <div className='flex w-screen justify-center mt-5'>
               <button
