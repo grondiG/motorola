@@ -14,6 +14,7 @@ Projekt stworzony na potrzeby zadania Bioinformatyka z konkursu Motorola Science
 
 ## Instalacja
 Z aplikacji można korzystać poprzez hosting, ale ponad to można uruchomić ją lokalnie. Poniżej znajduje się instrukcja jak tego dokonać.
+Aby program funkcjonował poprawnie należy zainstalować najnowszą wersję <a href="https://go.dev">go</>
 
 ### Pobieranie kodu źródłowego
 ```bash
