@@ -14,7 +14,6 @@ Projekt stworzony na potrzeby zadania Bioinformatyka z konkursu Motorola Science
 
 ## Instalacja
 Z aplikacji można korzystać poprzez hosting, ale ponad to można uruchomić ją lokalnie. Poniżej znajduje się instrukcja jak tego dokonać.
-Aby aplikacja działała poprawnie należy pobrać odpowiednią wersje <a href="https://go.dev">go</a>
 
 ### Pobieranie kodu źródłowego
 ```bash
@@ -239,6 +238,20 @@ Aby uzyskać zdjęcie należy w miejsce ```:req``` podstawić sekwencję na tych
 /api/sequenceImg/:seq
 ```
 ---
+#### Response:
+Odpowiedzią jest zdjęcie w formacie .png. Jego szerokość jest zależna od ilości wprowadzonych danych w sekwencji.
+### Uzyskiwanie masy molowej całego białka
+#### Request:
+Aby uzyskać zdjęcie należy w miejsce ```:req``` podstawić sekwencję na tych samych zasadach co powyżej.
+```
+/api/proteinWeight/:seq
+```
+---
+#### Response:
+Przykładowa odpowiedź:
+```json
+{"weight":259.36944}
+```
 ## Aplikacja
 ### Zastosowane technologie
 <p align="left">
@@ -248,12 +261,8 @@ Aby uzyskać zdjęcie należy w miejsce ```:req``` podstawić sekwencję na tych
 							 height="45"/></a>
 	<a href="https://github.com/pmndrs/react-three-fiber"><img src="https://i.ibb.co/nR0GHtJ/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f746875.png" title="Threejs" width="45"
 								   height="45"/></a>
-	<a href="https://github.com/nodejs/node"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain-wordmark.svg" title="Node.js" width="45"
-						      height="45"/></a>
-	<a href="https://github.com/expressjs/express"><img src="https://i.ibb.co/JcmjdbW/Expressjs.png" title="Express"
-						      height="35"/></a>
+	<a href="https://github.com/golang/go"><img src="https://miro.medium.com/max/600/1*i2skbfmDsHayHhqPfwt6pA.png" title="Golang" width="45" height="45" /></a>
 </p>
-
 ### Przewodnik
 
 #### Panel pierwszy
