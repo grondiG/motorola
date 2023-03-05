@@ -16,7 +16,7 @@ const Result = (props:{
     return (
         <div className={`result-item`}>
             <ResultProteinChain setIsChartVisible={setIsChartVisible} seq={props.seq} setIsSubmited={props.setIsSubmited}
-               isSubmited={props.isSubmited} length={props.length} index={props.index} weight={props.proteinInfo}/>
+               isSubmited={props.isSubmited} length={props.length} index={props.index} weight={props.proteinInfo.weight}/>
             <ResultChart proteinInfo={props.proteinInfo} isChartVisible={isChartVisible}/>
         </div>
     )

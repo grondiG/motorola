@@ -106,7 +106,7 @@ const ResultProteinChain = (props: {
                 </div>
             </div>
               <div className={'flex justify-center items-center'}>
-              <p>Masa: {props.weight.toFixed(4)} <sup>g</sup>&frasl;<sub>mol</sub></p>
+              <p>Masa: {props.weight?.toFixed(4)} <sup>g</sup>&frasl;<sub>mol</sub></p>
                 </div>
               <div className='flex w-screen justify-center mt-5'>
               <button
