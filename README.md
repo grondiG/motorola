@@ -14,6 +14,7 @@ Projekt stworzony na potrzeby zadania Bioinformatyka z konkursu Motorola Science
 
 ## Instalacja
 Z aplikacji można korzystać poprzez hosting, ale ponad to można uruchomić ją lokalnie. Poniżej znajduje się instrukcja jak tego dokonać.
+Aby aplikacja działała poprawnie należy pobrać odpowiednią wersje <a href="https://go.dev">go</a>
 
 ### Pobieranie kodu źródłowego
 ```bash
@@ -238,20 +239,6 @@ Aby uzyskać zdjęcie należy w miejsce ```:req``` podstawić sekwencję na tych
 /api/sequenceImg/:seq
 ```
 ---
-#### Response:
-Odpowiedzią jest zdjęcie w formacie .png. Jego szerokość jest zależna od ilości wprowadzonych danych w sekwencji.
-### Uzyskiwanie masy molowej całego białka
-#### Request:
-Aby uzyskać zdjęcie należy w miejsce ```:req``` podstawić sekwencję na tych samych zasadach co powyżej.
-```
-/api/proteinWeight/:seq
-```
----
-#### Response:
-Przykładowa odpowiedź:
-```json
-{"weight":259.36944}
-```
 ## Aplikacja
 ### Zastosowane technologie
 <p align="left">
