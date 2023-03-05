@@ -19,7 +19,7 @@ Aby program funkcjonował poprawnie należy zainstalować najnowszą wersję <a 
 ### Pobieranie kodu źródłowego
 ```bash
 git clone https://github.com/grondiG/motorola.git
-git submodule update --force --recursive --init --remote
+git submodule update --init
 ```
 ### Instalacja paczek
 Aby aplikacja działała poprawnie należy zainstalować odpowiednie paczki.
