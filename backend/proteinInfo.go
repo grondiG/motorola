@@ -240,7 +240,7 @@ func getProteinWeight(protein string) float32 {
         aminoAcidInfo := aminoAcidInfoMap[aminoAcid]
         totalWeight += aminoAcidInfo["weight"]
     }
-    totalWeight -= (18.01528 - float32(len(protein)))
+    totalWeight -= (18.01528 * float32(len(protein)))
 
     return totalWeight
 }
