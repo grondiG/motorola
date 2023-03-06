@@ -14,7 +14,7 @@ Projekt stworzony na potrzeby zadania Bioinformatyka z konkursu Motorola Science
 
 ## Instalacja
 Z aplikacji można korzystać poprzez hosting, ale ponad to można uruchomić ją lokalnie. Poniżej znajduje się instrukcja jak tego dokonać.
-Aby program funkcjonował poprawnie należy zainstalować najnowszą wersję <a href="https://go.dev">go</a>
+Aby program funkcjonował poprawnie należy zainstalować najnowszą wersję <a href="https://go.dev">go</a> oraz <a href="https://www.python.org/">python</a>
 
 ### Pobieranie kodu źródłowego
 ```bash
@@ -42,6 +42,11 @@ npm run dev
 ```
 Po wpisaniu powyższej komendy na systemie powinny odpalić się dwie usługi na portach 3000 i 5173 odpowiadające kolejno za serwer REST API i samą aplikację.
 Aplikacja będzie dostępna pod adresem ```localhost:5173``` a API pod ```localhost:3000```
+### Testowanie
+```
+npm run test
+```
+Po wpisaniu powyższej komendy możliwe jest przeprowadzenie testów podstawowych uslug.
 ## API
 Na potrzeby tego projektu powstało autorskie REST API pozwalające na analizę zarówno sekwencji DNA jak i RNA.
 ### Główny route ```https://www.grondihub.live/```

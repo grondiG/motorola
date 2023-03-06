@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "dev": "concurrently \"cd backend && go run .\" \"cd frontend && npm run dev\"",
-    "packages": "npm install && (cd backend && go get) && (cd frontend && npm install)"
+    "packages": "npm install && (cd backend && go get) && (cd frontend && npm install)",
+    "test": "cd backend && python3 drawImage_test.py && python3 sequences_test.py"
   },
   "repository": {
     "type": "git",
